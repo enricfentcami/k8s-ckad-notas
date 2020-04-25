@@ -30,6 +30,8 @@ Para actualizar la imagen directamente se puede utilizar el siguiente comando, p
 
 `kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1`
 
+Ojo: `nginx=nginx:1.9.1` es el nombre del contenedor y la nueva imagen con su versión
+
 ### **1.3. Upgrades**
 
 Internamente crea un ReplicaSet nuevo donde asigna los Pods y el viejo los va eliminando. El ReplicaSet viejo se quedará a 0 en número de replicas.
