@@ -20,6 +20,19 @@ https://kubernetes.io/docs/concepts/services-networking/service/#publishing-serv
 
 `kubectl get services`
 
+#### Crear servicio desde comando (exponer pod o deployment):
+
+`kubectl expose deployment ingress-controller --type=NodePort --port=80 --name=ingress -n ingress-space --dry-run -o yaml > service-ingress.yaml`
+
+                    ^             ^                 ^             ^           ^                 ^             ^
+                Qué tipo     Nombre deploy.      Tipo serv.     Puerto     Nombre serv.      Namespace     No ejecutarlo
+
+Importante:
+* El selector pone por defecto el `name: nginx-ingress` que es el label del deployment
+* El namespace no lo incluye en el YAML, debe hacerse manualmente
+* El NodePort fijo '30080' se pone manualmente
+
+
 Eliminar el service:
 
 `kubectl delete service myapp-service`
