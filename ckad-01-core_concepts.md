@@ -40,6 +40,13 @@ Generar POD Manifest YAML file "-o yaml". No crearlo en kubernetes con "--dry-ru
 
 `kubectl run --generator=run-pod/v1 webapp-green --image=kodekloud/webapp-color -o yaml --dry-run=true > pod.yaml`
 
+Opción alternativa:
+
+`kubectl run nginx --image=nginx --restart=Never --dry-run -o yaml > pod.yaml`
+
+_Importante: con `--restart=Never` genera el Pod, sin eso genera un Deployment_
+
+
 Pod con labels:
 
 `kubectl run --generator=run-pod/v1 redis --image=redis:alpine --labels=tier=db`
@@ -56,6 +63,35 @@ spec:
       image: nginx
       ports:
         - containerPort: 8080
+```
+
+### **2.3. ReplicaSet**
+
+ReplicaSet no se puede generar por comando, hay que utilizar YAML.
+
+Escalar y modificar el RS por comando:
+
+`kubectl scale replicaset webapp --replicas=3`
+
+YAML Ejemplo:
+```yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
 ```
 
 ### **2.3. Deployment**
