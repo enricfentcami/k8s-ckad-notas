@@ -27,6 +27,12 @@ spec:
       image: simple-webapp
 ```
 
+Crear Pods con labels (o deployments):
+
+`kubectl run --generator=run-pod/v1 test1 --image nginx --labels tier=front,app=nginx`
+
+`kubectl run --generator=run-pod/v1 test2 --image nginx -l tier=front,app=nginx`
+
 Seleccionar Pods por label con kubectl:
 
 `kubectl get pods --selector app=app1`
