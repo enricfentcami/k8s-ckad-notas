@@ -94,6 +94,8 @@ spec:
         image: nginx
 ```
 
+OJO: Si tenemos PODs creados anteriormente que cumplen con el `selector` se eliminarán los que "sobren" para cumplir con el número de replicas. Si hay menos que el número de replicas se crearán solo los necesarios para cumplir la condición.
+
 ### **2.3. Deployment**
 
 `kubectl create deployment --image=nginx nginx`
