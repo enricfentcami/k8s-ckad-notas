@@ -169,6 +169,43 @@ spec:
     app: webapp
 ```
 
+Ejemplo de Pod y Servicio por comando:
+
+`kubectl run --generator=run-pod/v1 test-web --image=nginx -l app=front` 
+
+`kubectl expose pod test-web --name=test-web-service --port=80 --selector=app=front`
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: front
+  name: test-web
+  namespace: eebb
+spec:
+  containers:
+  - image: nginx
+    name: test-web
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: front
+  name: test-web-service
+  namespace: eebb
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: front
+```
+
 ### **2.5. Namespaces**
 
 `kubectl create namespace test`

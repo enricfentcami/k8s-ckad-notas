@@ -167,3 +167,10 @@ Para ver todos los eventos ocurridos en el sistema (cada namespace tiene su prop
 `kubectl get events -n my-namespace`
 
 `kubectl get events --all-namespaces`
+
+## **6. Exec commands**
+
+Bash:
+
+`kubectl exec -it my-pod -- /bin/bash`
+

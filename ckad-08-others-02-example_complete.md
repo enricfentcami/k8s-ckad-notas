@@ -8,15 +8,15 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: webapp-full
-  namespace: default
+  namespace: eebb
   labels:
     name: webapp-full
     app: nginx
     function: front-end
   annotations:
-    version: 1.17
-    company: EEBB
-    country: Spain
+    version: "1.17"
+    company: "EEBB"
+    country: "Spain"
 spec:
   containers:
   - name: webapp-full
@@ -37,7 +37,7 @@ spec:
         configMapKeyRef:
           name: app-config-1
           key: APP_VAR1
-    - name: APP_COLOR
+    - name: APP_SEC1
       valueFrom:
         secretKeyRef:
           name: app-secret-1
@@ -45,9 +45,9 @@ spec:
     # Env vars from (configMap, secret)
     envFrom:
     - configMapRef:
-      name: app-config-2
+        name: app-config-2
     - configMapRef:
-      name: app-config-3
+        name: app-config-3
     - secretRef:
         name: app-secret-2
     - secretRef:
@@ -89,11 +89,10 @@ spec:
       type: Directory
   - name: app-claim-volume
     persistentVolumeClaim:
-      claimName: app-pvc
+      claimName: app-claim-volume
   - name: app-config-volume
     configMap:
         name: app-config-4
-
 ```
 
 ## **REPLICA SET**
@@ -103,6 +102,7 @@ apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
   name: webapp-rs
+  namespace: eebb
   labels:
     name: webapp-rs
     app: nginx
@@ -128,6 +128,39 @@ spec:
 
 ## **DEPLOYMENT**
 
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  namespace: eebb
+  labels:
+    name: webapp
+    app: nginx
+    function: front-end
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: webapp
+      app: nginx
+  template:
+    metadata:
+      labels:
+        name: webapp
+        app: nginx
+        function: front-end
+    spec:
+      containers:
+      - name: webapp-dep
+        image: nginx
+        # Ports
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP # Default
+      [...]
+```
 
 ## **SERVICE**
 
@@ -135,11 +168,92 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: simple-webapp-service
+  name: webapp-service
+  namespace: eebb
 spec:
-  selector:
-    app: app1 # Para seleccionar qué Pods encajan con este Service
+  selector:  # Para seleccionar qué Pods o Deployment encajan con este Service
+    name: webapp
+    app: nginx
+    function: front-end
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080
+      targetPort: 80
+```
+
+## **CONFIG MAP**
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config-1
+  namespace: eebb
+data:
+  APP_VAR1: VALUE_1
+```
+
+Comandos para el Pod:
+
+`kubectl create configmap app-config-1 --from-literal=APP_VAR1=VALUE_1 -n eebb`
+
+`kubectl create configmap app-config-2 --from-literal=APP_VAR2=VALUE_2 -n eebb`
+
+`kubectl create configmap app-config-3 --from-literal=APP_VAR3=VALUE_3 -n eebb`
+
+`kubectl create configmap app-config-4 --from-literal=APP_VAR4=VALUE_4 -n eebb`
+
+## **SECRET**
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secret-1
+  namespace: eebb
+data:
+  APP_SEC1: U0VDUkVUXzE=
+```
+
+Comandos para el Pod:
+
+`kubectl create secret generic app-secret-1 --from-literal=APP_SEC1=SECRET_1 -n eebb`
+
+`kubectl create secret generic app-secret-2 --from-literal=APP_SEC2=SECRET_2 -n eebb`
+
+`kubectl create secret generic app-secret-3 --from-literal=APP_SEC3=SECRET_3 -n eebb`
+
+## **PERSISTENT VOLUME**
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: app-volume
+spec:
+  storageClassName: webapp
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 100Mi
+  hostPath: # Path del nodo. No recomendado en producción
+    path: /data/webapp
+    type: DirectoryOrCreate
+```
+
+## **PERSISTENT VOLUME CLAIM**
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-claim-volume
+  namespace: eebb
+spec:
+  storageClassName: webapp
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Mi
+```
