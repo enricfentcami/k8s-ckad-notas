@@ -170,7 +170,10 @@ Para ver todos los eventos ocurridos en el sistema (cada namespace tiene su prop
 
 ## **6. Exec commands**
 
-Bash:
+Acceso al bash:
 
 `kubectl exec -it my-pod -- /bin/bash`
 
+Ejecutar un comando directamente:
+
+`kubectl exec -it my-pod -- date -s '19 APR 2012 11:14:00'`
