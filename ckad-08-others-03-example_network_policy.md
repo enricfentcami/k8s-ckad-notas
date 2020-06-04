@@ -1,5 +1,7 @@
 # EXAMPLE NETWORK POLICY
 
+![Design Patterns](./resources/images/ckad-networkpolicy.png)
+
 ## **PODS**
 ---
 
