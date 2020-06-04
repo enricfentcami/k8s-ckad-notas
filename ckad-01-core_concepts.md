@@ -251,3 +251,19 @@ Forzar el borrado:
 ### Eliminar desde YAML
 
 `kubectl delete -f pod.yaml`
+
+## **5. Contexto y namespaces**
+
+Ver datos de contexto y namespace por defecto:
+
+`kubectl config get-contexts`
+
+Establecer el contexto por defecto, cambio de clúster:
+
+`kubectl config use-context my-cluster-name`
+
+Establecer un nuevo namespace por defecto para el contexto (clúster) actual:
+
+`kubectl config set-context --current --namespace=ggckad-s2`
+
+IMPORTANTE: Muy útil en el examen ya que las preguntas tienen su propio namespace

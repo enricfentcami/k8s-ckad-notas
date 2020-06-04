@@ -8,11 +8,11 @@ https://kubernetes.io/docs/concepts/services-networking/service/
 Exponer una aplicación de un Pod como un servicio de red, para que pueda ser accedido por otros Pods.
 
 Service Types:
-* NodePort service: Escucha en un puerto del nodo y redirige las peticiones de ese puerto al puerto del Pod de la app.
-* Cluster IP: IP virtual dentro del clúster para habilitar la comunicación entre diferentes servicios como: De un grupo de front-end servers a un grupo de back-end servers.
+* NodePort service: Escucha en un puerto del nodo y redirige las peticiones de ese puerto al puerto del Pod de la app. **Exponer hacia fuera un servicio.**
+* Cluster IP: IP virtual dentro del clúster para habilitar la comunicación **interna** entre diferentes servicios como: De un grupo de front-end servers a un grupo de back-end servers. Valor por defecto.
 * Load balancer: Balanceo de carga. Distribuir carga entre distintos Pods.
 
-https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+IMPORTANTE: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
 
 ### **1.2. Comandos**
 
@@ -22,10 +22,10 @@ https://kubernetes.io/docs/concepts/services-networking/service/#publishing-serv
 
 #### Crear servicio desde comando (exponer pod o deployment):
 
-`kubectl expose deployment ingress-controller --type=NodePort --port=80 --name=ingress -n ingress-space --dry-run -o yaml > service-ingress.yaml`
+`kubectl expose deployment webapp-deployment --type=NodePort --port=80 --name=webapp-service -n webapp-ns --dry-run -o yaml > service-webapp.yaml`
 
-                    ^             ^                 ^             ^           ^                 ^             ^
-                Qué tipo     Nombre deploy.      Tipo serv.     Puerto     Nombre serv.      Namespace     No ejecutarlo
+                    ^             ^                 ^             ^               ^                 ^           ^
+                Qué tipo     Nombre deploy.      Tipo serv.     Puerto       Nombre serv.       Namespace     No ejecutarlo
 
 Importante:
 * El selector pone por defecto el `name: nginx-ingress` que es el label del deployment

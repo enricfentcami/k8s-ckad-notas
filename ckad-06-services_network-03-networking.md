@@ -10,8 +10,12 @@ https://kubernetes.io/docs/concepts/services-networking/network-policies/
 
 La respuesta del servicio no influyen en los conceptos.
 
-
 USUARIO ---(ingress:80)-> WEB -(egress:5000)---(ingress:5000)-> BACKEND -(egress:3306)---(ingress:3306)-> DB
+
+En el [ejemplo completo](ckad-08-others-03-example_network_policy.md) se puede ver cómo funciona. Es importante saber:
+* Un policyType sin configuración específica provoca la denegación de ese tipo de tráfico
+* Para permitir todo el tráfico ingress/egress, o no ponemos el policyType o dejamos su configuración vacía `- {}`
+
 
 ## **2. Network security / policy**
 ---
@@ -50,6 +54,8 @@ ingress:
   - protocol: TCP
     port: 3306
 ```
+
+_IMPORTANTE: Si no se pone el puerto en la config de ingress o egress se acepta cualquier puerto._
 
 Ejemplo completo de network policy para DB Pod, permitir acceso desde BACKEND(API):
 ```yaml
