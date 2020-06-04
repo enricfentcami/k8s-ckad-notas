@@ -7,11 +7,20 @@ Se utiliza para que ciertos nodos solo puedan contener pods con ciertas caracter
 - Taint = nodo
 - Toleration = pod
 
+Obtener nodos disponibles:
+
+`kubectl get nodes`
+
+Obtener características de un nodo:
+
+`kubectl describe node node01`
+
+
 ### **1.1. Taint (node)**
 
 `kubectl taint nodes node-name key=value:taint-effect`
 
-`kubect taint nodes node1 app=blue:NoSchedule`
+`kubectl taint nodes node1 app=blue:NoSchedule`
 
 Tipos de 'taint-effect':
 - NoSchedule
@@ -21,6 +30,8 @@ Tipos de 'taint-effect':
 Eliminar el taint de master para que se pueda utilizar como worker:
 
 `kubectl taint nodes master node-role.kubernetes.io/master:NoSchedule-`
+
+Ojo: El `-` de `NoSchedule` indica que se va a eliminar ese taint.
 
 ### **1.2. Toleration (pod)**
 

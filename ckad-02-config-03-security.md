@@ -88,6 +88,8 @@ Acceso al API de Kubernetes utilizando un token.
 
 `kubectl get serviceaccount`
 
+Abreviado: `kubectl get sa`
+
 `kubectl describe serviceaccount dashboard-sa`
 
 Al crearlo el token se genera automáticamente a través de un secret. El nombre del secret está en el apartado "Tokens" de los datos del Service Account creado.
@@ -109,5 +111,7 @@ spec:
       image: busybox
   serviceAccount: dashboard-sa
 ```
+
+El secret de los service account se montan en /var/run/secrets/kubernetes.io/service/account
 
 _Nota: Todos los Pods tienen asignado por defecto el services account 'default', pero se puede desactivar con la propiedad `automountServiceAccountToken: false`_

@@ -170,6 +170,8 @@ Para ver todos los eventos ocurridos en el sistema (cada namespace tiene su prop
 
 ## **6. Exec commands**
 
+https://kubernetes.io/docs/tasks/debug-application-cluster/get-shell-running-container/
+
 Acceso al bash:
 
 `kubectl exec -it my-pod -- /bin/bash`

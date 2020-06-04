@@ -46,6 +46,10 @@ Volver un Deployment al estado anterior.
 
 Destuirá los pods del ReplicaSet nuevo y relanzará los del viejo.
 
+Volver a una versión concreta:
+
+`kubectl rollout undo deployment/nginx-deployment --to-revision=2`
+
 ## **3. Resumen de comandos**
 
 - Crear: `kubectl create -f deployment-def.yaml`

@@ -34,13 +34,16 @@ Con información completa (incluye en qué nodo está y su IP):
 
 `kubectl run --generator=run-pod/v1 nginx-pod --image=nginx:alpine`
 
+Añadir argumentos `args` al contendor, que se ejecutarán. Depués del `--` son los argumentos:
+`kubectl run --generator=run-pod/v1 pod1 --image=bash -- bash -c "hostname >> /tmp/hostname && sleep 1d"` 
+
 Generar POD Manifest YAML file "-o yaml". No crearlo en kubernetes con "--dry-run":
 
 `kubectl run --generator=run-pod/v1 nginx --image=nginx --dry-run -o yaml`
 
 `kubectl run --generator=run-pod/v1 webapp-green --image=kodekloud/webapp-color -o yaml --dry-run=true > pod.yaml`
 
-Opción alternativa:
+Opción alternativa (desaconsejada):
 
 `kubectl run nginx --image=nginx --restart=Never --dry-run -o yaml > pod.yaml`
 
@@ -240,6 +243,10 @@ Si el cambio no se puede realizar en caliente se guardará una copia en un fiche
 ### Eliminar desde comando
 
 `kubectl delete pod my-pod`
+
+Forzar el borrado:
+
+`kubectl delete pod my-pod --grace-period=0 --force`
 
 ### Eliminar desde YAML
 

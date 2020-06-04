@@ -3,6 +3,8 @@
 ## **1. Labels, selectors & annotations**
 ---
 
+https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+
 - Labels = Etiquetas que indican características
 - Selectors = Selección según características
 - Annotations = Metadatos para enriquecer los datos del objeto (solo informativos)
@@ -37,9 +39,15 @@ Seleccionar Pods por label con kubectl:
 
 `kubectl get pods --selector app=app1`
 
+`kubectl get pods -l app=app1`
+
 Seleccionar Pods por varias labels:
 
 `kubectl get pods --selector bu=finance,env=prod,tier=frontend`
+
+`kubectl get pods -l bu=finance,env=prod,tier=frontend`
+
+`kubectl get pods -l bu=finance,env=prod,tier!=frontend`
 
 ### Ejemplos:
 
