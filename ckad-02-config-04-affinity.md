@@ -18,14 +18,17 @@ Obtener características de un nodo:
 
 ### **1.1. Taint (node)**
 
+Taint indica que el nodo solo aceptará pods que en su toleration cumpla con la condición key=value.
+
 `kubectl taint nodes node-name key=value:taint-effect`
 
 `kubectl taint nodes node1 app=blue:NoSchedule`
+> Ningún pod se meterá (no schedule) en el node1 a no ser que tenga toleration que coincida.
 
 Tipos de 'taint-effect':
-- NoSchedule
-- PreferNoSchedule
-- NoExecute
+- NoSchedule: No se meterá un pod si no cumple la condición
+- PreferNoSchedule: Preferiblemente no se meterá un pod si no cumple la condición
+- NoExecute: No se meterá un pod si no cumple la condición y los que ya existan que no la cumplen serán eliminados (kill)
 
 Eliminar el taint de master para que se pueda utilizar como worker:
 
@@ -34,6 +37,8 @@ Eliminar el taint de master para que se pueda utilizar como worker:
 Ojo: El `-` de `NoSchedule` indica que se va a eliminar ese taint.
 
 ### **1.2. Toleration (pod)**
+
+Se crea la condición para cumplir un taint, pero no significa que obligatoriamente un pod vaya a dicho nodo
 
 ```yaml
 apiVersion: v1

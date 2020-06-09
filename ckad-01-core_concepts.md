@@ -135,9 +135,9 @@ metadata:
     app: webapp
 spec:
   replicas: 3
-  #selector:
-  #  matchLabels:
-  #    app: webapp
+  selector:
+    matchLabels:
+      app: webapp
   template:
     metadata:
       labels:
