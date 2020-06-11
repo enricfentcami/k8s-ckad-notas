@@ -1,5 +1,7 @@
 # CONFIGURACIÓN - Asignación de pods a nodos (afinidad)
 
+Explicación de taints y affinity: https://medium.com/@betz.mark/herding-pods-taints-tolerations-and-affinity-in-kubernetes-2279cef1f982
+
 ## **1. Taints and tolerations**
 ---
 
@@ -15,20 +17,19 @@ Obtener características de un nodo:
 
 `kubectl describe node node01`
 
-
 ### **1.1. Taint (node)**
 
-Taint indica que el nodo solo aceptará pods que en su toleration cumpla con la condición key=value.
+Taint indica que el nodo solo aceptará pods que en su `toleration` cumpla con la condición key=value. Y será intolerante a cualquer otro tipo de pod.
 
 `kubectl taint nodes node-name key=value:taint-effect`
 
 `kubectl taint nodes node1 app=blue:NoSchedule`
-> Ningún pod se meterá (no schedule) en el node1 a no ser que tenga toleration que coincida.
+> Ningún pod se meterá (no schedule) en el node1 a no ser que tenga `toleration` que coincida.
 
-Tipos de 'taint-effect':
+Tipos de 'taint-effect', indica el comportamiento ante pods intolerantes:
 - NoSchedule: No se meterá un pod si no cumple la condición
 - PreferNoSchedule: Preferiblemente no se meterá un pod si no cumple la condición
-- NoExecute: No se meterá un pod si no cumple la condición y los que ya existan que no la cumplen serán eliminados (kill)
+- NoExecute: No se meterá un pod si no cumple la condición y los que ya existan que no la cumplen serán expulsados (evicted)
 
 Eliminar el taint de master para que se pueda utilizar como worker:
 
@@ -144,7 +145,7 @@ Disponibles actualmente:
 - `requitedDuringSchedulingIgnoredDuringExecution`
 - `preferredDuringSchedulingIgnoredDuringExecution`
 
-Indican si el Pod puede despegarse o no en un nodo. Puede ser requerido en el momento de desplegar o preferible que se despliegue en el nodo indicado. Siempre se ignora este valor si el Pod ya está ejecutándose en el nodo que coge el nuevo valor (etiqueta) y dejan de encajar.
+Indican si el Pod puede desplegarse o no en un nodo. Puede ser requerido en el momento de desplegar o preferible que se despliegue en el nodo indicado. Siempre se ignora este valor si el Pod ya está ejecutándose en el nodo que coge el nuevo valor (etiqueta) y dejan de encajar.
 
 ## **5. Taints & Tolerations VS Node Affinity**
 
