@@ -141,6 +141,12 @@ Para Pods con múltiples contenedores, se debe especificar el nombre de cada con
 
 `kubectl logs -f my-pod container-1`
 
+`-f` es "follow" para mostrar los logs en modo "tail"
+
+Logs de hijos:
+* Logs de un job: `kubect logs job/busybox-job`
+* Logs de un deployment: `kubectl logs deployment/webapp-deployment`
+
 
 ## **4. Monitoring**
 ---
