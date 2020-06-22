@@ -22,6 +22,13 @@ spec:
       memory: "2Gi"
       cpu: 2
 ```
+
+Por comando:
+
+`kubectl run --generator=run-pod/v1 nginx --image=nginx --requests='cpu=1,memory=1Gi' --limits='cpu=2,memory=2Gi'`
+
+`kubectl run --generator=run-pod/v1 nginx --image=nginx --requests='cpu=100m,memory=256Mi' --limits='cpu=200m,memory=512Mi'`
+
 ¿Qué pasa si se excede el límite?
 - La CPU que consuma el Pod no puede exceder los límites.
 - La memoria sí puede exceder, pero si es constante el Pod será finalizado.

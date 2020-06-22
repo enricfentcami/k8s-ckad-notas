@@ -52,14 +52,18 @@ spec:
         name: app-secret-2
     - secretRef:
         name: app-secret-3
-    # Volume mounts (hostPath, pvc, configMap)
+    # Volume mounts (hostPath, temporal, pvc, configMap, secret)
     volumeMounts:
     - mountPath: /tmp/data
       name: app-data-volume
+    - mountPath: /tmp/temporal
+      name: app-temporal-volume
     - mountPath: /tmp/claim
       name: app-claim-volume
     - mountPath: /tmp/config
       name: app-config-volume
+    - mountPath: /tmp/secret
+      name: app-secret-volume
     # Resources (requests, limits)
     resources:
       requests:
@@ -81,18 +85,23 @@ spec:
         port: 80
       initialDelaySeconds: 15
       periodSeconds: 20
-  # Volumes (hostPath, pvc, configMap)
+  # Volumes (hostPath, pvc, configMap, secret)
   volumes:
   - name: app-data-volume
     hostPath:
       path: /data
       type: Directory
+  - name: app-temporal-volume
+    emptyDir: {}
   - name: app-claim-volume
     persistentVolumeClaim:
       claimName: app-claim-volume
   - name: app-config-volume
     configMap:
         name: app-config-4
+  - name: app-secret-volume
+    secret:
+        name: app-secret-4
 ```
 
 ## **REPLICA SET**
@@ -222,6 +231,8 @@ Comandos para el Pod:
 `kubectl create secret generic app-secret-2 --from-literal=APP_SEC2=SECRET_2 -n eebb`
 
 `kubectl create secret generic app-secret-3 --from-literal=APP_SEC3=SECRET_3 -n eebb`
+
+`kubectl create secret generic app-secret-4 --from-literal=APP_SEC4=SECRET_4 -n eebb`
 
 ## **PERSISTENT VOLUME**
 

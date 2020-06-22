@@ -49,7 +49,7 @@ En el Pod se definirá un volumen:
 
 ```yaml
 volumeMounts:
-  - name: config-volume
+  - name: app-config-volume
     mountPath: /etc/config
 ```
 
@@ -85,7 +85,7 @@ data:
   PASSWORD: ZG9ja2Vy
 ```
 
-En el YAML se deben añadir los datos cifrados cifrados (el cifrado es débil con bas64):
+En el YAML se deben añadir los datos cifrados (el cifrado es débil con bas64):
 
 `echo -n 'root' | base64`
 

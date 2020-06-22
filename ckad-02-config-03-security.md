@@ -22,7 +22,7 @@ Security context a nivel de contendor:
 * Proporciona atributos adicionales como:
   * `allowPrivilegeEscalation`: Para controlar si un proceso puede obtener más privilegios que su proceso padre.
     * `allowPrivilegeEscalation: false`
-  * `capabilities`: Permitir ciertos privilegios a un proces sin otorgar todos los privilegios de root.
+  * `capabilities`: Permitir ciertos privilegios a un proceso sin otorgar todos los privilegios de root.
     * `add: ["NET_ADMIN", "SYS_TIME"]`
 
 
@@ -81,6 +81,8 @@ spec:
 
 ## **2. Service Account**
 ---
+
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
 
 Acceso al API de Kubernetes utilizando un token.
 

@@ -51,7 +51,7 @@ metadata:
 spec:
   type: NodePort      # Default es ClusterIP
   ports:
-    - targetPort: 80  # Si no se especifica se coge le mismo que 'port'
+    - targetPort: 80  # Si no se especifica se coge el mismo que 'port'
       port: 80        # Obligatorio
       nodePort: 30008 # Si no se especifica se asigna automáticamente
   selector:
@@ -85,7 +85,7 @@ metadata:
 spec:
   type: ClusterIP     # Default es ClusterIP, no hace falta especificarlo
   ports:
-    - targetPort: 80  # Si no se especifica se coge le mismo que 'port'
+    - targetPort: 80  # Si no se especifica se coge el mismo que 'port'
       port: 80        # Obligatorio
   selector:
     app: myapp        # Labels del Pod

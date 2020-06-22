@@ -30,6 +30,19 @@ Con información completa (incluye en qué nodo está y su IP):
 
 ### **2.2. Pod**
 
+`kubectl run` ha sufrido cambios entre versiones. Para exámenes con versión 1.18+ (2020) se utilizará la forma corta.
+* `kubectl run nginx --image=nginx` -> Crea un pod
+
+En versiones anteriores (utilizado en labs o clústers sandbox):
+* `kubectl run nginx --image=nginx` -> Crea un deployment (DEPRECATED)
+* `kubectl run --generator=run-pod/v1 nginx --image=nginx` -> Crea un pod
+
+> Verficar versión con `kubectl version`
+
+_En los ejemplos pueden utilizarse ambas versiones, en ningún ejemplo se utiliza el run para crear un deployment._
+
+`kubectl run nginx --image=nginx`
+
 `kubectl run --generator=run-pod/v1 nginx --image=nginx`
 
 `kubectl run --generator=run-pod/v1 nginx-pod --image=nginx:alpine`
@@ -43,11 +56,11 @@ Generar POD Manifest YAML file "-o yaml". No crearlo en kubernetes con "--dry-ru
 
 `kubectl run --generator=run-pod/v1 webapp-green --image=kodekloud/webapp-color -o yaml --dry-run=true > pod.yaml`
 
-Opción alternativa (desaconsejada):
+*Restart Never*:
 
-`kubectl run nginx --image=nginx --restart=Never --dry-run -o yaml > pod.yaml`
+`kubectl run nginx --image=nginx --restart=Never --dry-run -o yaml > pod.yaml` -> K8s 1.18+
 
-_Importante: con `--restart=Never` genera el Pod, sin eso genera un Deployment_
+_Importante: con `--restart=Never` en versiones antiguas genera el Pod, sin eso genera un Deployment (DEPRECATED)_
 
 
 Pod con labels:
@@ -60,6 +73,8 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: webapp
+  labels:
+    tier: frontend
 spec:
   containers:
     - name: nginx
@@ -67,6 +82,8 @@ spec:
       ports:
         - containerPort: 8080
 ```
+
+Si no se especifica una label tendrá por defecto `run=nginx` (nombre del pod)
 
 ### **2.3. ReplicaSet**
 

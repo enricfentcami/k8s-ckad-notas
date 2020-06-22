@@ -35,18 +35,48 @@ Si ese servidor central recibe de varias apps, seguramente el formato de logs se
 
 Si la aplicación se comunica con diferentes BDs durante el desarrollo (dev, pre, pro) hay que gestionar esto. Por lo que el contenedor Ambassador hará de proxy y todas las conexiones irán a localhost y se encargará de redirigirlas a la BD pertinente.
 
+#### Ejemplo Sidecar
+
+Los contenedores comparte volumen para que el sidecar pueda leer los logs de la aplicación y procesarlos.
+
 ```yaml
 apiVersion: v1
 kind: Pod
 metadata:
-  name: webapp-color
+  name: counter
 spec:
   containers:
-    - name: webapp-color
-      image: webapp-color
-  tolerations:
-    - key: "app"
-      operator: "Equal"
-      value: "blue"
-      effect: NoSchedule
+  - name: count
+    image: busybox
+    args:
+    - /bin/sh
+    - -c
+    - >
+      i=0;
+      while true;
+      do
+        echo "$i: $(date)" >> /var/log/1.log;
+        echo "$(date) INFO $i" >> /var/log/2.log;
+        i=$((i+1));
+        sleep 1;
+      done
+    volumeMounts:
+    - name: varlog
+      mountPath: /var/log
+  - name: count-agent
+    image: k8s.gcr.io/fluentd-gcp:1.30
+    env:
+    - name: FLUENTD_ARGS
+      value: -c /etc/fluentd-config/fluentd.conf
+    volumeMounts:
+    - name: varlog
+      mountPath: /var/log
+    - name: config-volume
+      mountPath: /etc/fluentd-config
+  volumes:
+  - name: varlog
+    emptyDir: {}
+  - name: config-volume
+    configMap:
+      name: fluentd-config
 ```

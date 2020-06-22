@@ -125,6 +125,8 @@ The service video-service should be accessible on http://watch.ecom-store.com:30
 
 The service apparels-service should be accessible on http://apparels.ecom-store.com:30093/wear
 
+Here 30093 is the port used by the Ingress Controller
+
 Ingress:
 ```yaml
 apiVersion: networking.k8s.io/v1beta1
