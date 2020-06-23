@@ -1,5 +1,17 @@
 # WARM UP
 
+## Create a namespace warmup and set it by default
+
+<details><summary>Show answer</summary>
+<p>
+
+`kubectl create ns warmup`
+
+`kubectl config set-context --current --namespace=warmup`
+
+</p>
+</details>
+
 ## Create a pod nginx with nginx image, expose port 80. With labels app=pod1 and tier=front
 
 <details><summary>Show answer</summary>
@@ -168,7 +180,7 @@ spec:
 </p>
 </details>
 
-## Create a pod busybox to load config map and secret vars in env. Print environment and delete it
+## Create a pod busybox to load config map and secret vars in env, and prints environment vars. Check and delete it
 
 <details><summary>Show answer</summary>
 <p>
