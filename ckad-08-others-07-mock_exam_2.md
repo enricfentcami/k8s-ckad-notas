@@ -7,7 +7,7 @@
    37  kubectl delete -f q5.yaml
    38  kubectl create -f q5.yaml
    39  kubectl get po
-   40  kubectl run --generator=run-pod/v1 nginx1401 --image:nginx -o yaml --dry-run > q6.yaml
+   40  kubectl run nginx1401 --image:nginx -o yaml --dry-run > q6.yaml
    41  
    42  vi q6.yaml
    43  kubectl create -f q6.yaml
@@ -35,9 +35,9 @@
    65  kubectl create -f q7.yaml
    66  kubectl get po
    67  kubectl get job
-   68  kubectl run --generator=run-pod/v1 multi-pod --image=nginx --command=sleep 4800 --env=type=planet -o yaml --dry-run > q8.yaml
-   69  kubectl run --generator=run-pod/v1 multi-pod --image=nginx --command="sleep 4800" --env=type=planet -o yaml --dry-run > q8.yaml
-   70  kubectl run --generator=run-pod/v1 multi-pod --image=nginx --command "sleep 4800" --env=type=planet -o yaml --dry-run > q8.yaml
+   68  kubectl run multi-pod --image=nginx --command=sleep 4800 --env=type=planet -o yaml --dry-run > q8.yaml
+   69  kubectl run multi-pod --image=nginx --command="sleep 4800" --env=type=planet -o yaml --dry-run > q8.yaml
+   70  kubectl run multi-pod --image=nginx --command "sleep 4800" --env=type=planet -o yaml --dry-run > q8.yaml
    71  vi q8.yaml
    72  
    73  kubectl create -f q8.yaml
@@ -119,7 +119,7 @@ Add a taint to the node node01 of the cluster. Use the specification below:
 
 `kubectl taint nodes node01 app_type=alpha:NoSchedule`
 
-`kubectl run --generator=run-pod/v1 alpha --image=redis -o yaml --dry-run > q2.yaml`
+`kubectl run alpha --image=redis -o yaml --dry-run > q2.yaml`
 
 ```yaml
 apiVersion: v1
@@ -237,7 +237,7 @@ spec:
 
 Create a new pod called nginx1401 in the default namespace with the image nginx. Add a livenessProbe to the container to restart it if the command ls /var/www/html/probe fails. This check should start after a delay of 10 seconds and run every 60 seconds.
 
-`kubectl run --generator=run-pod/v1 nginx1401 --image=nginx -o yaml --dry-run > q6.yaml`
+`kubectl run nginx1401 --image=nginx -o yaml --dry-run > q6.yaml`
 
 ```yaml
 apiVersion: v1
@@ -319,7 +319,7 @@ Environment Variables:
 * Container 1: type: planet
 * Container 2: type: moon
 
-`kubectl run --generator=run-pod/v1 multi-pod --image=busybox --command "sleep 4800" --env=type=moon -o yaml --dry-run > q8.yaml`
+`kubectl run multi-pod --image=busybox --command "sleep 4800" --env=type=moon -o yaml --dry-run > q8.yaml`
 
 ```yaml
 apiVersion: v1

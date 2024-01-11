@@ -28,7 +28,7 @@ Comprobarlo:
 Añadir carga al POD (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#increase-load):
 _(Ejecutar en otra consola)_
 
-`kubectl run --generator=run-pod/v1 -it --rm load-generator --image=busybox /bin/sh`
+`kubectl run -it --rm load-generator --image=busybox /bin/sh`
 
 Ejecutar bucle infinito:
 

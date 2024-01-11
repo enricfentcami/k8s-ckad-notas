@@ -30,42 +30,27 @@ Con información completa (incluye en qué nodo está y su IP):
 
 ### **2.2. Pod**
 
-`kubectl run` ha sufrido cambios entre versiones. Para exámenes con versión 1.18+ (2020) se utilizará la forma corta.
-* `kubectl run nginx --image=nginx` -> Crea un pod
-
-En versiones anteriores (utilizado en labs o clústers sandbox):
-* `kubectl run nginx --image=nginx` -> Crea un deployment (DEPRECATED)
-* `kubectl run --generator=run-pod/v1 nginx --image=nginx` -> Crea un pod
-
-> Verficar versión con `kubectl version`
-
-_En los ejemplos pueden utilizarse ambas versiones, en ningún ejemplo se utiliza el run para crear un deployment._
-
-`kubectl run nginx --image=nginx`
-
-`kubectl run --generator=run-pod/v1 nginx --image=nginx`
-
-`kubectl run --generator=run-pod/v1 nginx-pod --image=nginx:alpine`
+`kubectl run nginx --image=nginx` -> Crea un pod
 
 Añadir argumentos `args` al contendor, que se ejecutarán. Depués del `--` son los argumentos:
-`kubectl run --generator=run-pod/v1 pod1 --image=bash -- bash -c "hostname >> /tmp/hostname && sleep 1d"` 
+`kubectl run pod1 --image=bash -- bash -c "hostname >> /tmp/hostname && sleep 1d"` 
 
-Generar POD Manifest YAML file "-o yaml". No crearlo en kubernetes con "--dry-run":
+Generar POD Manifest YAML file "-o yaml". No crearlo en kubernetes con "--dry-run=client":
 
-`kubectl run --generator=run-pod/v1 nginx --image=nginx --dry-run -o yaml`
+`kubectl run nginx --image=nginx --dry-run=client -o yaml`
 
-`kubectl run --generator=run-pod/v1 webapp-green --image=kodekloud/webapp-color -o yaml --dry-run=true > pod.yaml`
+`kubectl run webapp-green --image=kodekloud/webapp-color -o yaml --dry-run=client > pod.yaml`
 
 *Restart Never*:
 
-`kubectl run nginx --image=nginx --restart=Never --dry-run -o yaml > pod.yaml` -> K8s 1.18+
+`kubectl run nginx --image=nginx --restart=Never --dry-run=client -o yaml > pod.yaml` -> K8s 1.18+
 
 _Importante: con `--restart=Never` en versiones antiguas genera el Pod, sin eso genera un Deployment (DEPRECATED)_
 
 
 Pod con labels:
 
-`kubectl run --generator=run-pod/v1 redis --image=redis:alpine --labels=tier=db`
+`kubectl run redis --image=redis:alpine --labels=tier=db`
 
 YAML Ejemplo:
 ```yaml
@@ -120,17 +105,21 @@ OJO: Si tenemos PODs creados anteriormente que cumplen con el `selector` se elim
 
 `kubectl create deployment --image=nginx nginx`
 
-Generar Deployment YAML file "-o yaml". No crearlo en kubernetes con "--dry-run":
+Generar Deployment YAML file "-o yaml". No crearlo en kubernetes con "--dry-run=client":
 
-`kubectl create deployment --image=nginx nginx --dry-run -o yaml`
+`kubectl create deployment --image=nginx nginx --dry-run=client -o yaml`
 
 **Crear deployment con replicas**
 
 Crear yaml y añadir replicas:
 
-`kubectl create deployment --image=nginx nginx --dry-run -o yaml > nginx-deployment.yaml`
+`kubectl create deployment --image=nginx nginx --dry-run=client -o yaml > nginx-deployment.yaml`
 
 Abrir el fichero YAML y añadir las réplicas necesarias, por defecto es 1. Luego lanzar la creación a partir de fichero.
+
+Crear con replicas:
+
+`kubectl create deployment webapp --image=kodekloud/webapp-color --replicas=3`
 
 Crear y escalar:
 
@@ -138,9 +127,9 @@ Crear y escalar:
 
 `kubectl scale deployment/webapp --replicas=3`
 
-OJO: No funciona poner el parámetro en el comando, las replicas se hacen con "scale" y los labels tampoco se pueden poner por comando
+OJO: Los labels no se pueden poner por comando, esto no fuciona:
 
-`kubectl create deployment webapp --image=kodekloud/webapp-color --replicas=3 --labels=app=kodekloud-webapp-color`
+`kubectl create deployment webapp --image=kodekloud/webapp-color --replicas=3 --labels=app=kodekloud-webapp-color` ->  `unknown flag: --labels`
 
 YAML Ejemplo:
 ```yaml
@@ -191,7 +180,7 @@ spec:
 
 Ejemplo de Pod y Servicio por comando:
 
-`kubectl run --generator=run-pod/v1 test-web --image=nginx -l app=front` 
+`kubectl run test-web --image=nginx -l app=front` 
 
 `kubectl expose pod test-web --name=test-web-service --port=80 --selector=app=front`
 
@@ -232,7 +221,7 @@ spec:
 
 Obtener los objetos de un namespace:
 - `kubectl get pods -n test`
-- `kubeclt get pods --namespace=test (versión larga)`
+- `kubeclt get pods --namespace=test` (versión larga)
 - `kubectl get pods --all-namespaces`
 
 YAML Ejemplo:
@@ -263,7 +252,7 @@ Si el cambio no se puede realizar en caliente se guardará una copia en un fiche
 
 Forzar el borrado:
 
-`kubectl delete pod my-pod --grace-period=0 --force`
+`kubectl delete pod my-pod --force`
 
 ### Eliminar desde YAML
 

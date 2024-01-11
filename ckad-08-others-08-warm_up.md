@@ -17,7 +17,7 @@
 <details><summary>Show answer</summary>
 <p>
 
-`kubectl run nginx --image=nginx --restart=Never --port=80 -l app=pod1 -l tier=front`
+`kubectl run nginx --image=nginx --port=80 -l app=pod1 -l tier=front`
 
 </p>
 </details>
@@ -29,7 +29,7 @@
 
 `kubectl get po -o wide` -> Get the pod IP
 
-`kubectl run busybox --image=busybox --restart=Never --rm -it -- /bin/sh -c 'wget -O- 10.239.0.31:80'`
+`kubectl run busybox --image=busybox --rm -it -- /bin/sh -c 'wget -O- 10.239.0.31:80'`
 
 </p>
 </details>
@@ -49,7 +49,7 @@
 <details><summary>Show answer</summary>
 <p>
 
-`kubectl run busybox --image=busybox --restart=Never --rm -it -- /bin/sh -c 'wget -O- nginx-service:8080'`
+`kubectl run busybox --image=busybox --rm -it -- /bin/sh -c 'wget -O- nginx-service:8080'`
 
 </p>
 </details>
@@ -59,7 +59,7 @@
 <details><summary>Show answer</summary>
 <p>
 
-`kubectl run nginx2 --image=nginx --restart=Never --port=80 --requests=cpu=1,memory=256Mi --limits=cpu=2,memory=512Mi`
+`kubectl run nginx2 --image=nginx --port=80 --requests=cpu=1,memory=256Mi --limits=cpu=2,memory=512Mi`
 
 `kubectl get po nginx2 -o yaml`
 
@@ -143,7 +143,7 @@ spec:
 
 `kubectl get nodes` -> Get the node name (worker)
 
-`kubectl run busybox --image=busybox --restart=Never --rm -it -- /bin/sh -c 'wget -O- node10031-ckad-sandbox.jelastic.labs.gmv.com:30817'`
+`kubectl run busybox --image=busybox --rm -it -- /bin/sh -c 'wget -O- node10031-ckad-sandbox.jelastic.labs.gmv.com:30817'`
 
 </p>
 </details>
@@ -185,7 +185,7 @@ spec:
 <details><summary>Show answer</summary>
 <p>
 
-`kubectl run busybox --image=busybox --restart=Never --dry-run -o yaml -- env > podenv.yaml`
+`kubectl run busybox --image=busybox --dry-run -o yaml -- env > podenv.yaml`
 
 `vim podenv.yaml`
 

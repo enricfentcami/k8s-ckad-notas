@@ -4,7 +4,7 @@
 
 Deploy a pod named nginx-448839 using the nginx:alpine image
 
-`kubectl run --generator=run-pod/v1 nginx-448839 --image=nginx:alpine`
+`kubectl run nginx-448839 --image=nginx:alpine`
 
 ## Q2:
 
@@ -44,7 +44,7 @@ spec:
 
 Deploy a messaging pod using the redis:alpine image with the labels set to tier=msg.
 
-`kubectl run --generator=run-pod/v1 messaging --image=redis:alpine -l tier=msg`
+`kubectl run messaging --image=redis:alpine -l tier=msg`
 
 ## Q5:
 
@@ -205,7 +205,7 @@ Create a Pod called sega with two containers:
 Container 1: Name tails with image busybox and command: sleep 3600.
 Container 2: Name sonic with image nginx and Environment variable: NGINX_PORT with the value 8080.
 
-`kubectl run --generator=run-pod/v1 sega --image=busybox --command sleep 3600 --dry-run -o yaml > q14.yaml`
+`kubectl run sega --image=busybox --command sleep 3600 --dry-run -o yaml > q14.yaml`
 
 ```yaml
 apiVersion: v1

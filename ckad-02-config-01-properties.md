@@ -85,13 +85,29 @@ data:
   PASSWORD: ZG9ja2Vy
 ```
 
-En el YAML se deben añadir los datos cifrados (el cifrado es débil con bas64):
+En el YAML se pueden añadir los datos de dos formas:
 
-`echo -n 'root' | base64`
+* Cifrados como en el ejemplo anterior (el cifrado es débil con base64):
 
-Se pueden descifrar del mismo modo, fácil:
+  `echo -n 'root' | base64`
 
-`echo -n 'cm9vdA==' | base64 --decode`
+  Se pueden descifrar del mismo modo, fácil:
+
+  `echo -n 'cm9vdA==' | base64 --decode`
+
+* En claro:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-config-secret
+  labels:
+    app: database
+stringData:
+  USER: root
+  PASSWORD: password
+```
 
 ### **2.1. Referenciar en un Pod, todas las propiedades:**
 

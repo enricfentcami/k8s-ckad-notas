@@ -5,13 +5,13 @@
 ## **PODS**
 ---
 
-`kubectl run --generator=run-pod/v1 nginx-1 --image=nginx`
+`kubectl run nginx-1 --image=nginx`
 
-`kubectl run --generator=run-pod/v1 nginx-2 --image=nginx`
+`kubectl run nginx-2 --image=nginx`
 
-`kubectl run --generator=run-pod/v1 nginx-3 --image=nginx`
+`kubectl run nginx-3 --image=nginx`
 
-`kubectl run --generator=run-pod/v1 nginx-4 --image=nginx`
+`kubectl run nginx-4 --image=nginx`
 
 ## **SERVICES**
 ---

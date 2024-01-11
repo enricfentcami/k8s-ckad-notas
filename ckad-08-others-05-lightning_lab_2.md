@@ -78,7 +78,7 @@ The container should mount a read-only secret volume called secret-volume at the
 
 Make sure that the pod is scheduled on master and no other node in the cluster.
 
-`kubectl run --generator=run-pod/v1 my-busybox --image=busybox --command sleep 3600 --dry-run -o yaml > q3.yaml`
+`kubectl run my-busybox --image=busybox --command sleep 3600 --dry-run -o yaml > q3.yaml`
 
 Pod:
 ```yaml
