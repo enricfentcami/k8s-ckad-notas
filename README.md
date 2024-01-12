@@ -1,10 +1,10 @@
 # Notas Kubernetes CKAD 
 
-Notas para la CKAD de Kubernetes tomadas durante el curso de Udemy/KodeKloud de preparación del examen.
+Notes for the Kubernetes CKAD taken during the Udemy/KodeKloud exam preparation course.
 
-## Contenido
+## Content
 
-Basado en el % aproximado de que consta el examen:
+Based on the approximate % of the exam:
 
 - Application Design and Build - 20%
   - [Define, build and modify container images](ckad-02-config-05-container_images.md)
@@ -44,22 +44,22 @@ Basado en el % aproximado de que consta el examen:
   - [Provide and troubleshoot access to applications via services](ckad-06-services_network-01-services.md)
   - [Use Ingress rules to expose applications](ckad-06-services_network-02-ingress.md)
 
-### Información complementaria
+### Additional information
 
-Hay otros ficheros con ejercicios variados y notas:
-- [Ejemplo completo de manifiestos YAML](ckad-99-others-02-example_complete.md)
-- [Ejercicios warm up para el examen](ckad-99-others-08-warm_up.md)
-- Soluciones a ejercicios de KodeKloud
+There are other files with various exercises and notes:
+- [Complete YAML manifests example](ckad-99-others-02-example_complete.md)
+- [Warm up exercises for the exam](ckad-99-others-08-warm_up.md)
+- Solutions to KodeKloud exercises
 - [Lightning lab 1](ckad-99-others-04-lightning_lab_1.md)
 - [Lightning lab 2](ckad-99-others-05-lightning_lab_2.md)
 - [Mock exam 1](ckad-99-others-06-mock_exam_1.md)
 - [Mock exam 2](ckad-99-others-07-mock_exam_2.md)
-- [Horizontal Autoscaling - NO INCLUIDO EN CKAD](ckad-99-others-01-horizontal_autoscaling.md)
-- [Notas sobre default requirements](ckad-note_detault_resource_req.md)
-- [Notas sobre edición de Pods](ckad-note_edit-pods.md)
-- [Tips sobre formateo](ckad-tips_formatting.md)
+- [Horizontal Autoscaling - NOT INCLUDED IN CKAD](ckad-99-others-01-horizontal_autoscaling.md)
+- [Notes about default requirements](ckad-note_detault_resource_req.md)
+- [Notes about editing Pods](ckad-note_edit-pods.md)
+- [Tips about formatting](ckad-tips_formatting.md)
 
-### Indice obsoleto, previo a 2021
+### Deprecated index, previous to 2021 changes
 
 - [Core Concepts - 13%](ckad-01-core_concepts.md)
 - Configuration - 18%
