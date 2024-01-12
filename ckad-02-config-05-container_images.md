@@ -1,35 +1,42 @@
-# CONFIGURACIÓN - Imágenes de contenedores
+# CONFIGURATION - Container images
 
-## **1. Definir Dockerfile**
+## **1. Define Dockerfile**
 ---
 
-xx
+Sample Dockerfile for Python:
 
 ```yaml
+FROM python:3.6
+
+RUN pip install flask
+
+COPY . /opt/
+
+EXPOSE 8080
+
+WORKDIR /opt
+
+ENTRYPOINT ["python", "app.py"]
 ```
-
-Comando:
-
-`kubectl run nginx --image=nginx --requests='cpu=1,memory=1Gi' --limits='cpu=2,memory=2Gi'`
-
-
 
 ## **2. Comandos básicos Docker**
 
-docker image ls
+List images: `docker images`
 
-docker image build
+Build container: `docker build -t webapp-color .`
 
-docker image tag
+Run container and change port: `docker run -p 8282:8080 --name webapp-color webapp-color` 
+
+docker tag
 
 docker image rm
 
-docker image push/pull
+docker push/pull
 
 
+## Possible exam questions:
 
-Tarea tipo examen:
-
-Utilizando el Dockerfile proporcionado, construir una imagen de contenedor
-Eliminar la imagen
-
+1. Using a predefined Dockerfile, build an image and push to a repo (or build in a worker node)
+2. Use the previous image in a Pod
+3. Fix problems in a Dockerfile and build the image
+4. Delete an image
