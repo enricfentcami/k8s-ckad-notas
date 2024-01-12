@@ -19,6 +19,10 @@ Con información completa (incluye en qué nodo está y su IP):
 
 ### **1.2. Obtener la definición en YAML**
 
+`kubectl get pod my-pod -o yaml`
+
+Almacenar el YAML en fichero:
+
 `kubectl get pod my-pod -o yaml > pod.yaml`
 
 ## **2. Crear objetos**
