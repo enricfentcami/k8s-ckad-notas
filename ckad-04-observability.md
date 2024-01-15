@@ -1,7 +1,9 @@
-# OBSERVABILITY - Verificación del estado de pods y nodos
+# OBSERVABILITY - Verification of the state of pods and nodes
 
-## **1. Readiness Probes**
+## **1. Probes**
 ---
+
+## **1.1. Readiness probes**
 
 Se utilizan para comprobar que la aplicación dentro de un Pod está lista para recibir peticiones. Realizando un test a un API, obtener un HTML, lanzar un comando contra BD a través de un script interno del contenedor, ...
 
@@ -65,7 +67,7 @@ readinessProbe:
   failureThreshold: 8 # numero de reintentos si falla el test, 3 intentos por defecto
 ```
 
-## **2. Liveness Probes**
+## **1.2. Liveness Probes**
 ---
 
 Se utilizan para comprobar que la aplicación dentro de un Pod está en marcha, es un health check, y puede seguir recibiendo peticiones. Realizando un test a un API, obtener un HTML, lanzar un comando contra BD a través de un script interno del contenedor, ...

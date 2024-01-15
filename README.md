@@ -22,11 +22,11 @@ Based on the approximate % of the exam:
   - Kustomize
 
 - Application Observability and Maintenance - 15%
-  - Understand API deprecations
-  - [Implement probes and health checks](ckad-04-observability.md)
-  - [Use built-in CLI tools to monitor Kubernetes applications](ckad-04-observability.md)
-  - [Utilize container logs](ckad-04-observability.md)
-  - [Debugging in Kubernetes](ckad-04-observability.md)
+  - [Understand API deprecations](ckad-04-api-deprecation.md)
+  - [Implement probes and health checks](ckad-04-observability.md#1-probes)
+  - [Use built-in CLI tools to monitor Kubernetes applications](ckad-04-observability.md#4-monitoring)
+  - [Utilize container logs](ckad-04-observability.md#3-logs)
+  - [Debugging in Kubernetes](ckad-04-observability.md#5-debug-pods)
 
 - Application Environment, Configuration and Security - 25%
   - Discover and use resources that extend Kubernetes (CRD, Operators)
