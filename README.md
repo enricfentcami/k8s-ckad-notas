@@ -29,8 +29,8 @@ Based on the approximate % of the exam:
   - [Debugging in Kubernetes](ckad-04-observability.md#5-debug-pods)
 
 - Application Environment, Configuration and Security - 25%
-  - Discover and use resources that extend Kubernetes (CRD, Operators)
-  - Understand authentication, authorization and admission control
+  - [Discover and use resources that extend Kubernetes (CRD, Operators)](ckad-02-config-06-crd-operators.md)
+  - [Understand authentication, authorization and admission control](ckad-02-config-03-security-auth-rbac.md)
   - [Understand requests, limits, quotas](ckad-02-config-02-resources.md)
   - [Understand ConfigMaps](ckad-02-config-01-properties.md)
   - [Define resource requirements](ckad-02-config-04-affinity.md)
