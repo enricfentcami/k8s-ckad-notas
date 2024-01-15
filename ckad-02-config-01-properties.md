@@ -11,6 +11,17 @@ Crear ConfigMap desde comando con fichero:
 
 `kubectl create configmap app-config --from-file=application.properties`
 
+Sample ConfigMap YAML file:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  APP_VAR1: VALUE_1
+```
+
 ### **1.1. Referenciar en un Pod, todas las propiedades:**
 
 Inyección de las variables de entorno desde un ConfigMap.
@@ -70,7 +81,7 @@ Crear Secret desde comando con fichero:
 
 `kubectl create secret generic app-secret --from-file=application-secret.properties`
 
-YAML Ejemplo:
+Sample Secret YAML file:
 
 ```yaml
 apiVersion: v1

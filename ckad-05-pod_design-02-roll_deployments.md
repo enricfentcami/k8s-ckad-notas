@@ -3,67 +3,67 @@
 ## **1. Rollout and Versioning**
 ---
 
-Rollout se lanza cada vez que se crea o actualiza un Deployment. Esto genera una revisión de los cambios realizados y que puede ser utilizada para hacer rollback.
+Rollout is launched every time a Deployment is created or updated. This generates a review of the changes made and which can be used for rollback.
 
-Obtener el estado de rollout de un Deployment:
+Obtain the rollout status of a Deployment:
 
 `kubectl rollout status deployment/myapp-deployment`
 
-Listar las revisiones e historial de un Deployment:
+List the revisions and history of a Deployment:
 
 `kubectl rollout history deployment/myapp-deployment`
 
 ### **1.1. Deployment Strategy**
 
-- Recreate: Al actualizar elimina los Pods y los vuelve a crear a la vez, provocando pérdida de servicio.
-  - Internamente escala a 0 las replicas del viejo Deployment y las vuelve a establecer para la actualización en el nuevo Deployment.
-- Rolling update (default): Elimina y crea los Pods uno a uno para evitar pérdida de servicio.
-  - Internamente escala una a una las replicas del nuevo (+) y viejo (-) Deployment.
+- Recreate: When updating, it deletes the Pods and recreates them at the same time, causing loss of service.
+  - Internally scales the replicas of the old Deployment to 0 and resets them for the update in the new Deployment.
+- Rolling update (default): Delete and create Pods one by one to avoid loss of service.
+  - Internally it scales the replicas of the new (+) and old (-) Deployment one by one.
 
 ### **1.2. Actualizar Deployment**
 
-Se modifica algún parámetro del Deployment, como la versión de un contenedor, número de réplicas, ... Y se ejecuta el comando, creando un nuevo rollout:
+Some Deployment parameter is modified, such as the version of a container, number of replicas, ... And the command is executed, creating a new rollout:
 
 `kubectl apply -f deployment-def.yaml`
 
-Para actualizar la imagen directamente se puede utilizar el siguiente comando, pero tendremos que actualizar nuestro fichero de definición YAML para futuros usos:
+To update the image directly you can use the following command, but we will have to update our YAML definition file for future uses:
 
 `kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1`
 
 `kubectl set image deploy myapp-deployment nginx=nginx:1.9.1`
 
-Ojo: `nginx=nginx:1.9.1` es el nombre del contenedor y la nueva imagen con su versión
+Note: `nginx=nginx:1.9.1` is the name of the container and the new image with its version
 
 ### **1.3. Upgrades**
 
-Internamente crea un ReplicaSet nuevo donde asigna los Pods y el viejo los va eliminando. El ReplicaSet viejo se quedará a 0 en número de replicas.
+Internally, it creates a new ReplicaSet where it assigns the Pods and the old one eliminates them. The old ReplicaSet will remain at 0 in number of replicas.
 
 `kubectl get replicasets`
 
 ## **2. Rollback**
 
-Volver un Deployment al estado anterior.
+Return a Deployment to the previous state.
 
 `kubectl rollout undo deployment/myapp-deployment`
 
-Destuirá los pods del ReplicaSet nuevo y relanzará los del viejo.
+It will destroy the pods of the new ReplicaSet and relaunch the pods of the old one.
 
-Volver a una versión concreta:
+Return to a specific version:
 
 `kubectl rollout undo deployment/nginx-deployment --to-revision=2`
 
 ## **3. Resumen de comandos**
 
-- Crear: `kubectl create -f deployment-def.yaml`
+- Create: `kubectl create -f deployment-def.yaml`
 - Get: `kubectl get deployments`
-- Update: `kubectl apply -f deployment-def.yaml` (Lo crea si no existe)
+- Update: `kubectl apply -f deployment-def.yaml` (Crea if not exists)
 - Status: `kubectl rollout status deployment/myapp-deployment`
 - History: `kubectl rollout history deployment/myapp-deployment`
-- Historico de una revisión: `kubectl rollout history deploy myapp-deployment --revision=2`
+- Revision history: `kubectl rollout history deploy myapp-deployment --revision=2`
 - Rollback: `kubectl rollout undo deployment/myapp-deployment`
-- Rollback a versión anterior: `kubectl rollout undo deploy nginx-deployment --to-revision=2`
+- Rollback to previous version: `kubectl rollout undo deploy nginx-deployment --to-revision=2`
 
-## **4. Ejemplos: Updating a Deployment**
+## **4. Examples: Updating a Deployment**
 
 Here are some handy examples related to updating a Kubernetes Deployment:
 

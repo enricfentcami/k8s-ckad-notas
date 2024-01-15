@@ -11,14 +11,14 @@ Based on the approximate % of the exam:
   - Choose and use the right workload resource (Deployment, DaemonSet, CronJob, etc.)
     - [Core concepts](ckad-01-core_concepts.md)
     - [Labels & selectors](ckad-05-pod_design-01-labels_selectors.md)
-    - [Jobs & CronJobs](ckad-05-pod_design-03-jobs_cronjobs.md)
+    - [Jobs & CronJobs](ckad-05-pod_design-04-jobs_cronjobs.md)
   - [Understand multi-container Pod design patterns (e.g. sidecar, init and others)](ckad-03-multi_container_pods.md)
   - [Utilize persistent and ephemeral volumes](ckad-07-state_persistence_volumes.md)
 
 - Application Deployment - 20%
-  - Use Kubernetes primitives to implement common deployment strategies (e.g. blue/green or canary)
+  - [Use Kubernetes primitives to implement common deployment strategies (e.g. blue/green or canary)](ckad-05-pod_design-03-deployment_strategies.md)
   - [Understand Deployments and how to perform rolling updates](ckad-05-pod_design-02-roll_deployments.md)
-  - Use the Helm package manager to deploy existing packages
+  - [Use the Helm package manager to deploy existing packages](ckad-05-pod_design-05-helm.md)
   - Kustomize
 
 - Application Observability and Maintenance - 15%
@@ -50,10 +50,10 @@ There are other files with various exercises and notes:
 - [Complete YAML manifests example](ckad-99-others-02-example_complete.md)
 - [Warm up exercises for the exam](ckad-99-others-08-warm_up.md)
 - Solutions to KodeKloud exercises
-- [Lightning lab 1](ckad-99-others-04-lightning_lab_1.md)
-- [Lightning lab 2](ckad-99-others-05-lightning_lab_2.md)
-- [Mock exam 1](ckad-99-others-06-mock_exam_1.md)
-- [Mock exam 2](ckad-99-others-07-mock_exam_2.md)
+  - [Lightning lab 1](ckad-99-others-04-lightning_lab_1.md)
+  - [Lightning lab 2](ckad-99-others-05-lightning_lab_2.md)
+  - [Mock exam 1](ckad-99-others-06-mock_exam_1.md)
+  - [Mock exam 2](ckad-99-others-07-mock_exam_2.md)
 - [Horizontal Autoscaling - NOT INCLUDED IN CKAD](ckad-99-others-01-horizontal_autoscaling.md)
 - [Notes about default requirements](ckad-note_detault_resource_req.md)
 - [Notes about editing Pods](ckad-note_edit-pods.md)
@@ -72,7 +72,7 @@ There are other files with various exercises and notes:
 - Pod design - 20%
   - [Labels & selectors](ckad-05-pod_design-01-labels_selectors.md)
   - [Deployments: Rolling updates and rollbacks](ckad-05-pod_design-02-roll_deployments.md)
-  - [Jobs & cronjobs](ckad-05-pod_design-03-jobs_cronjobs.md)
+  - [Jobs & cronjobs](ckad-05-pod_design-04-jobs_cronjobs.md)
 - Services and networking - 13%
   - [Services](ckad-06-services_network-01-services.md)
   - [Ingress](ckad-06-services_network-02-ingress.md)
