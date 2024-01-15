@@ -1,7 +1,6 @@
 # POD DESIGN - Labels & selectors
 
 ## **1. Labels, selectors & annotations**
----
 
 https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 

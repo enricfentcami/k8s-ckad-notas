@@ -1,7 +1,6 @@
 # A quick note on editing PODs and Deployments
 
 ## Edit a POD
----
 
 Remember, you CANNOT edit specifications of an existing POD other than the below.
 

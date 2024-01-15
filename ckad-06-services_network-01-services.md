@@ -1,7 +1,6 @@
 # SERVICES & NETWORK - Services
 
 ## **1. Services**
----
 
 https://kubernetes.io/docs/concepts/services-networking/service/
 
@@ -38,7 +37,6 @@ Eliminar el service:
 `kubectl delete service myapp-service`
 
 ## **2. NodePort**
----
 
 El puerto que se abre en el nodo va del 30000 al 32767. El puerto se abre en el clúster (nodos worker): `http://192.168.1.2:30008`
 
@@ -69,9 +67,7 @@ Acceso al Pod desde la red interna con IP del worker:
 
 `curl http://192.168.1.2:30008`
 
-
 ## **2. ClusterIP**
----
 
 Se asigna una IP del clúster al servicio como punto de acceso y se publica el puerto indicado en el servicio: `http://10.96.127.123:80`
 

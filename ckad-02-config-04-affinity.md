@@ -3,7 +3,6 @@
 Explicación de taints y affinity: https://medium.com/@betz.mark/herding-pods-taints-tolerations-and-affinity-in-kubernetes-2279cef1f982
 
 ## **1. Taints and tolerations**
----
 
 Se utiliza para que ciertos nodos solo puedan contener pods con ciertas características (repele pods). No significa que los pods que "encajan" en el nodo vayan a desplegarse en ese nodo obligatoriamente.
 - Taint = nodo
@@ -58,7 +57,6 @@ spec:
 ```
 
 ## **2. Etiquetar nodos**
----
 
 Los nodos se etiquetan para poder utilizar estos mecanismos de selección o afinidad:
 
@@ -68,7 +66,6 @@ Los nodos se etiquetan para poder utilizar estos mecanismos de selección o afin
 
 
 ## **3. Node selectors**
----
 
 Se utilizan etiquetas como '`size: Large`' para indicar que un Pod se despliegue en un nodo concreto.
 
@@ -88,7 +85,6 @@ spec:
 Pero ojo, que no se permiten condiciones como 'size = large OR size = medium' o 'size != small'
 
 ## **4. Node affinity (pod)**
----
 
 Mejora el funcionamiento de los node selectors permitiendo operaciones más complejas.
 

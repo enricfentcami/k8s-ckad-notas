@@ -3,7 +3,6 @@
 https://kubernetes.io/docs/concepts/services-networking/network-policies/
 
 ## **1. Ingress & Egress rules**
----
 
 * Ingress: Tráfico de entrada a un servicio
 * Egress: Tráfico de salida del servicio hacia otro servicio
@@ -18,7 +17,6 @@ En el [ejemplo completo](ckad-08-others-03-example_network_policy.md) se puede v
 
 
 ## **2. Network security / policy**
----
 
 Kubernetes está configurado por defecto para permitir todo el tráfico ("all allow") desde cualquier pod a otros pods o servicios en el clúster.
 

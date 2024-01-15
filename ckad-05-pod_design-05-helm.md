@@ -3,7 +3,6 @@
 Helm helps you manage Kubernetes applications — Helm Charts help you define, install, and upgrade even the most complex Kubernetes application.
 
 ## **1. Using Helm**
----
 
 The main command is the intall command, used to install the application/package:
 

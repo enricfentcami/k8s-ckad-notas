@@ -1,7 +1,6 @@
 # OBSERVABILITY - Verification of the state of pods and nodes
 
 ## **1. Probes**
----
 
 ## **1.1. Readiness probes**
 
@@ -68,7 +67,6 @@ readinessProbe:
 ```
 
 ## **1.2. Liveness Probes**
----
 
 Se utilizan para comprobar que la aplicación dentro de un Pod está en marcha, es un health check, y puede seguir recibiendo peticiones. Realizando un test a un API, obtener un HTML, lanzar un comando contra BD a través de un script interno del contenedor, ...
 
@@ -133,7 +131,6 @@ livenessProbe:
 ```
 
 ## **3. Logs**
----
 
 Para Pods con un solo contenedor:
 
@@ -151,7 +148,6 @@ Logs de hijos:
 
 
 ## **4. Monitoring**
----
 
 Se utiliza "Metrics Server" y está disponible a nivel de clúster. Se instala bajo demanda.
 
@@ -162,7 +158,6 @@ Para ver las métricas:
 - Pods: `kubectl top pod`
 
 ## **5. Debug pods**
----
 
 Básicamente es saber dónde ver la información de lo que ocurre con el Pod en caso de error.
 

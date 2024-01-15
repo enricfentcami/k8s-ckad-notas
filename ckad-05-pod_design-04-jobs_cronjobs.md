@@ -1,7 +1,6 @@
 # POD DESIGN - Jobs & CronJobs
 
 ## **1. Jobs**
----
 
 https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/
 
@@ -135,7 +134,6 @@ spec:
 ```
 
 ## **2. CronJobs**
----
 
 Jobs programados como 'crontab'.
 

@@ -1,7 +1,6 @@
 # CONFIGURACIÓN - Recursos de sistema
 
 ## **1. Recursos de sistema requeridos (Resource Request)**
----
 
 Para CKAD solo se necesita saber cómo especificar los recursos
 

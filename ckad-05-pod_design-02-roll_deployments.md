@@ -1,7 +1,6 @@
 # POD DESIGN - Deployments: Rolling updates and rollbacks
 
 ## **1. Rollout and Versioning**
----
 
 Rollout is launched every time a Deployment is created or updated. This generates a review of the changes made and which can be used for rollback.
 

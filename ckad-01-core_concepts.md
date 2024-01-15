@@ -5,7 +5,6 @@ https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 https://kubernetes.io/docs/reference/kubectl/conventions/
 
 ## **1. Get objects: Pods, Deployments, Services ...**
----
 
 `kubectl get pods`
 
@@ -26,7 +25,6 @@ Store the YAML in file:
 `kubectl get pod my-pod -o yaml > pod.yaml`
 
 ## **2. Create objects**
----
 
 ### **2.1. Create objects from a YAML file**
 
@@ -269,7 +267,6 @@ metadata:
 ```
 
 ## **3. Edit objects**
----
 
 The "vi" system editor will be opened to edit the YAML of the object.
 
@@ -278,7 +275,6 @@ The "vi" system editor will be opened to edit the YAML of the object.
 If the change cannot be applied intantly, a copy will be saved in a temporary file that will be indicated. With this file you can recreate the object by doing a previous delete.
 
 ## **4. Delete objects**
----
 
 ### Delete from command
 

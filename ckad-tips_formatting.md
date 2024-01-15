@@ -1,5 +1,4 @@
-Certification Tip: Formatting Output with kubectl
-----------------------------------------------------------------------------
+# Certification Tip: Formatting Output with kubectl
 
 The default output format for all kubectl commands is the human-readable plain-text format.
 

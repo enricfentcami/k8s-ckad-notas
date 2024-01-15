@@ -3,7 +3,6 @@
 These are not strategies implemented natively in Kubernetes, but you have to know how to carry them out with the available tools.
 
 ## **1. Bue/green**
----
 
 Blue/Green will maintain two Deployments with the current version of the application and the new version.
 Blue si called the old version and Green the new version, and once Green is available all traffic from Blue will be redirected to Green.
@@ -72,7 +71,6 @@ spec:
 ```
 
 ## **2. Canary**
----
 
 The Canary strategy is based on having the current version published and publishing the new version at the same time, but only redirecting a part of the traffic to the new version to be able to carry out tests with real users.
 

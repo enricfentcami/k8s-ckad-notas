@@ -1,7 +1,6 @@
 # CONFIGURATION - Container images
 
 ## **1. Define Dockerfile**
----
 
 Sample Dockerfile for Python:
 

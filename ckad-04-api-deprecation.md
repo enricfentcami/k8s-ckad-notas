@@ -3,7 +3,6 @@
 Understanding the API deprectation policy: https://kubernetes.io/docs/reference/using-api/deprecation-policy/
 
 ## **1. Deprecation Policy Rules**
----
 
 * Rule #1: API elements may only be removed by incrementing the version of the API group.
 * Rule #2: API objects must be able to round-trip between API versions in a given release without information loss, with the exception of whole REST resources that do not exist in some versions.

@@ -3,7 +3,6 @@
 ![Design Patterns](./resources/images/ckad-networkpolicy.png)
 
 ## **PODS**
----
 
 `kubectl run nginx-1 --image=nginx`
 
@@ -14,7 +13,6 @@
 `kubectl run nginx-4 --image=nginx`
 
 ## **SERVICES**
----
 
 `kubectl expose pod nginx-1 --name=nginx-service-1 --port=80 --type=NodePort`
 

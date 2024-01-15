@@ -1,7 +1,6 @@
 # CONFIGURACIÓN - Seguridad
 
 ## **1. Security Context**
----
 
 Define privilegios y control de acceso para Pods o contenedores.
 
@@ -80,7 +79,6 @@ spec:
 ```
 
 ## **2. Service Account**
----
 
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
 

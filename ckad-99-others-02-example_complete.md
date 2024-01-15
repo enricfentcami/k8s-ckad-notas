@@ -1,7 +1,6 @@
 # EXAMPLE COMPLETE
 
 ## **POD**
----
 
 ```yaml
 apiVersion: v1

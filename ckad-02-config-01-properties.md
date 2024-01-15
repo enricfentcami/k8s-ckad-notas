@@ -1,7 +1,6 @@
 # CONFIGURACIÓN - Propiedades y variables de entorno
 
 ## **1. ConfigMap**
----
 
 Crear ConfigMap desde comando con literales:
 
@@ -71,7 +70,6 @@ OJO, que si existe previamente el directorio `/etc/config` será eliminado su co
 Referencia: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#add-configmap-data-to-a-volume
 
 ## **2. Secrets**
----
 
 Crear Secret desde comando con literales:
 

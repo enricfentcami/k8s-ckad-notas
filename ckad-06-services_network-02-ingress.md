@@ -1,7 +1,6 @@
 # SERVICES & NETWORK - Ingress
 
 ## **1. Ingress**
----
 
 https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
 
@@ -31,7 +30,6 @@ Eliminar el ingress:
 OJO: No existe un atajo para generar un ingress por comando, hay que crear el yaml desde 0
 
 ## **2. Ingress resources**
----
 
 ### **2.1. Ingress básico**
 
@@ -143,9 +141,7 @@ spec:
               servicePort: 80
 ```
 
-
 ## **3. FAQ - What is the rewrite-target option?**
----
 
 https://kubernetes.github.io/ingress-nginx/examples/rewrite/
 

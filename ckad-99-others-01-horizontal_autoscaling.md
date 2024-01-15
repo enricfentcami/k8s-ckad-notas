@@ -7,7 +7,6 @@ https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkth
 https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#autoscale
 
 ## **1. Ejemplo**
----
 
 Desplegar servicio y deployment de prueba (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#run-expose-php-apache-server):
 

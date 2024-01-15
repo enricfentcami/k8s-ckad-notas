@@ -3,7 +3,6 @@
 El almacenamiento dentro de un Pod es volátil o transient. Se utilizan volúmenes para persistir datos fuera del Pod.
 
 ## **1. Volumes & mount**
----
 
 Montar un volumen dentro del Pod con almacenamiento en el host (solo util en single-node):
 
@@ -46,7 +45,6 @@ volumes:
 ```
 
 ## **2. Persistent Volumes**
----
 
 Pool de volúmenes de almacenamiento para todo el clúster que lo configura un administrador.
 
