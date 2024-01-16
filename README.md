@@ -19,7 +19,7 @@ Based on the approximate % of the exam:
   - [Use Kubernetes primitives to implement common deployment strategies (e.g. blue/green or canary)](ckad-05-pod_design-03-deployment_strategies.md)
   - [Understand Deployments and how to perform rolling updates](ckad-05-pod_design-02-roll_deployments.md)
   - [Use the Helm package manager to deploy existing packages](ckad-05-pod_design-05-helm.md)
-  - Kustomize
+  - Kustomize: https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
 
 - Application Observability and Maintenance - 15%
   - [Understand API deprecations](ckad-04-api-deprecation.md)
@@ -35,8 +35,8 @@ Based on the approximate % of the exam:
   - [Understand ConfigMaps](ckad-02-config-01-properties.md)
   - [Define resource requirements](ckad-02-config-04-affinity.md)
   - [Create & consume Secrets](ckad-02-config-01-properties.md)
-  - [Understand ServiceAccounts](ckad-02-config-03-security.md#2-service-account)
-  - [Understand Application Security (SecurityContexts, Capabilities, etc.)](ckad-02-config-03-security.md#1-security-context)
+  - [Understand ServiceAccounts](ckad-02-config-03-security-apps.md#2-service-account)
+  - [Understand Application Security (SecurityContexts, Capabilities, etc.)](ckad-02-config-03-security-apps.md#1-security-context)
 
 - Services and Networking - 20%
   - [Demonstrate basic understanding of NetworkPolicies](ckad-06-services_network-03-networking.md)
