@@ -1,9 +1,10 @@
-# CONFIGURACIÓN - Recursos de sistema
+# CONFIGURATION - System resources
 
-## **1. Recursos de sistema requeridos (Resource Request)**
+## **1.Required system resources (Resource Request)**
 
-Para CKAD solo se necesita saber cómo especificar los recursos
+For CKAD you only need to know how to specify the resources.
 
+Define the resource requests in the Pod level:
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -22,17 +23,17 @@ spec:
       cpu: 2
 ```
 
-Por comando:
+By command:
 
 `kubectl run nginx --image=nginx --requests='cpu=1,memory=1Gi' --limits='cpu=2,memory=2Gi'`
 
 `kubectl run nginx --image=nginx --requests='cpu=100m,memory=256Mi' --limits='cpu=200m,memory=512Mi'`
 
-¿Qué pasa si se excede el límite?
-- La CPU que consuma el Pod no puede exceder los límites.
-- La memoria sí puede exceder, pero si es constante el Pod será finalizado.
+What happens if the limit is exceeded?
+- The CPU consumed by the Pod cannot exceed the limits.
+- The memory can exceed, but if it is constant the Pod will be terminated.
 
-### **Valores de CPU**
+### **CPU values**
 
 - m = Milli (Millicore)
 - 1 CPU = 1000m
@@ -41,7 +42,7 @@ Por comando:
   - 1 Azure Core
   - 1 Hyperthread
 
-### **Valores de Memoria**
+### **Memory values**
 
 - Gi = Gibibyte
 - G = Gigabyte

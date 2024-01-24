@@ -1,5 +1,7 @@
 # CONFIGURATION - Security - Authentication, Authorization and Admission Control
 
+kubectl -> Authentication -> Authorization -> Admission Controller -> Execute command
+
 ## **1. Authentication**
 
 Authentication for users access to the k8s cluster for administrative purposes.
@@ -170,7 +172,7 @@ Check authorization modes configured on the cluster: `kubectl describe pod kube-
 
 These are Roles non namespaced, they are cluster scoped.
 
-Used to authoriza to non namespaced resources like: nodes, PVs, namespaces, ...
+Used to authorize to non namespaced resources like: nodes, PVs, namespaces, ...
 * Check API resources using `kubectl api-resources --namespaced=true/false`
 
 ClusterRole example:
@@ -201,4 +203,71 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
-## **3. Admission Control**
+## **3. Admission Controller**
+
+An admission controller is a piece of code that intercepts requests to the Kubernetes API server prior to persistence of the object, but after the request is authenticated and authorized.
+
+Admission controllers may be validating, mutating, or both. Mutating controllers may modify objects related to the requests they admit; validating controllers may not.
+
+Admission controllers limit requests to create, delete, modify objects. Admission controllers can also block custom verbs, such as a request connect to a Pod via an API server proxy. Admission controllers do not (and cannot) block requests to read (get, watch or list) objects.
+
+It has a lot of pre-built admission controllers, for example:
+* AlwaysPullImages
+* DefaultStorageClass
+* EventRateLimit
+* NamespaceAutoProvision (Disabled by default, deprecated and replaced by NamespaceLifecycle)
+* NamespaceExists (Enabled by default, deprecated and replaced by NamespaceLifecycle)
+* NamespaceLifecycle: The NamespaceLifecycle admission controller will make sure that requests to a non-existent namespace is rejected and that the default namespaces such as default, kube-system and kube-public cannot be deleted.
+
+View enabled admission controllers:
+* `kube-apiserver -h | grep enable-admission-plugins`
+* `kubectl exec kube-apiserver-controlplane -n kube-system -- kube-apiserver -h | grep enable-admission-plugins`
+
+Enable admission controller:
+* Edit the kube-apiserver object: `vi /etc/kubernetes/manifests/kube-apiserver.yaml`
+* Look for `--enable-admission-plugins`
+
+Disable admission controller:
+* Edit the kube-apiserver object: `vi /etc/kubernetes/manifests/kube-apiserver.yaml`
+* Look for or add `--disable-admission-plugins`
+
+### Validating and mutating admission controller
+
+Two types of admission controller:
+* Mutating: Can change the request
+* Validating: Validate the request and allow or deny
+
+Mutating is executed before validating. For example: NamespaceAutoProvision (mutating) is executed before NamespaceExists (Validating).
+
+#### Custom admission controller
+
+To develop our own Admission Controllers we will use the MutatingAdmissionWebhook and ValidatingAdmissionWebhook:
+1. Deploy an admission webhook server (inside the cluster or not) that receives an `AdmissionReview` object in JSON format
+2. Webhook server response is another `AdmissionReview` object with the `allowed` flag to true or false
+3. Webhook server can have a `validate` and/or `mutate` POST endpoints
+
+To configure an admission webhook we need to define a YAML object
+
+```yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata: 
+  name: "pod-policy-example.com"
+webhooks:
+  - name: "pod-policy-example.com"
+    clientConfig:
+      # If the webhook is deployed outside the cluster
+      url: "https://external-server.example.com"
+      # If the webhook is deployed inside the cluster
+      service:
+        namespace: "webhook-namespace"
+        name: "webhook-service"
+      caBundle: "xxxxxx"
+    rules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+        scope: "Namespaced"
+
+```

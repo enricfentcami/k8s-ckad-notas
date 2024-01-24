@@ -1,12 +1,12 @@
-# CONFIGURACIÓN - Propiedades y variables de entorno
+# CONFIGURATION - Properties and environment variables
 
 ## **1. ConfigMap**
 
-Crear ConfigMap desde comando con literales:
+Create ConfigMap from command with literals:
 
 `kubectl create configmap app-config --from-literal=USERNAME=root --from-literal=PASSWORD=root`
 
-Crear ConfigMap desde comando con fichero:
+Create ConfigMap from command with file:
 
 `kubectl create configmap app-config --from-file=application.properties`
 
@@ -21,9 +21,9 @@ data:
   APP_VAR1: VALUE_1
 ```
 
-### **1.1. Referenciar en un Pod, todas las propiedades:**
+### **1.1. Reference in a Pod, all properties:**
 
-Inyección de las variables de entorno desde un ConfigMap.
+Injection of environment variables from a ConfigMap.
 
 ```yaml
 envFrom:
@@ -31,9 +31,9 @@ envFrom:
       name: app-config
 ```
 
-### **1.2. Referenciar en un Pod, una propiedad concreta:**
+### **1.2. Reference a specific property in a Pod:**
 
-Inyección de una o varias variables de entorno desde un ConfigMap.
+Injection of one or more environment variables from a ConfigMap.
 
 ```yaml
 env:
@@ -44,9 +44,9 @@ env:
         key: APP_COLOR
 ```
 
-### **1.3. Referenciar en un Pod, como fichero a través de un volumen:**
+### **1.3. Reference in a Pod, as a file across a volume:**
 
-Inyección de las variables de entorno desde un ConfigMap en un fichero dentro de un volumen en el Pod.
+Injection of environment variables from a ConfigMap into a file within a volume in the Pod.
 
 ```yaml
 volumes:
@@ -55,7 +55,7 @@ volumes:
         name: app-config
 ```
 
-En el Pod se definirá un volumen:
+A volume will be defined in the Pod:
 
 ```yaml
 volumeMounts:
@@ -63,19 +63,19 @@ volumeMounts:
     mountPath: /etc/config
 ```
 
-Dentro de `/etc/config` existirá un fichero por cada clave definida en el ConfigMap.
+Within `/etc/config` there will be a file for each key defined in the ConfigMap.
 
-OJO, que si existe previamente el directorio `/etc/config` será eliminado su contenido.
+NOTE, if the `/etc/config` directory previously exists, its contents will be deleted.
 
-Referencia: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#add-configmap-data-to-a-volume
+Reference: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#add-configmap-data-to-a-volume
 
 ## **2. Secrets**
 
-Crear Secret desde comando con literales:
+Create Secret from command with literals:
 
 `kubectl create secret generic app-secret --from-literal=USERNAME=root --from-literal=PASSWORD=root`
 
-Crear Secret desde comando con fichero:
+Create Secret from command with file:
 
 `kubectl create secret generic app-secret --from-file=application-secret.properties`
 
@@ -94,17 +94,17 @@ data:
   PASSWORD: ZG9ja2Vy
 ```
 
-En el YAML se pueden añadir los datos de dos formas:
+Data can be added to the YAML in two ways:
 
-* Cifrados como en el ejemplo anterior (el cifrado es débil con base64):
+* Encrypted as in the previous example (it is not encrypted, it is base64 encoded):
 
   `echo -n 'root' | base64`
 
-  Se pueden descifrar del mismo modo, fácil:
+  They can be deciphered in the same way, easily:
 
   `echo -n 'cm9vdA==' | base64 --decode`
 
-* En claro:
+* Unencrypted values, in plain text:
 
 ```yaml
 apiVersion: v1
@@ -118,9 +118,9 @@ stringData:
   PASSWORD: password
 ```
 
-### **2.1. Referenciar en un Pod, todas las propiedades:**
+### **2.1. Reference in a Pod, all properties:**
 
-Inyección de las variables de entorno desde un Secret.
+Injection of environment variables from a Secret.
 
 ```yaml
 envFrom:
@@ -128,9 +128,9 @@ envFrom:
      name: app-secret
 ```
 
-### **2.2. Referencias en un Pod, una propiedad concreta:**
+### **2.2. References in a Pod, a specific property:**
 
-Inyección de una o varias variables de entorno desde un Secret.
+Injection of one or more environment variables from a Secret.
 
 ```yaml
 env:
@@ -141,9 +141,9 @@ env:
         key: APP_COLOR
 ```
 
-### **2.3. Referenciar en un Pod, como fichero a través de un volumen:**
+### **2.3. Reference in a Pod, as a file across a volume:**
 
-Inyección de las variables de entorno desde un Secret en un fichero dentro de un volumen en el Pod.
+Injection of environment variables from a Secret into a file within a volume in the Pod.
 
 ```yaml
 volumes:
@@ -152,7 +152,7 @@ volumes:
         secretName: app-secret
 ```
 
-En el Pod se definirá un volumen:
+A volume will be defined in the Pod:
 
 ```yaml
 volumeMounts:
@@ -160,8 +160,8 @@ volumeMounts:
     mountPath: /etc/config
 ```
 
-Dentro de `/etc/config` existirá un fichero por cada clave definida en el Secret.
+Within `/etc/config` there will be a file for each key defined in the Secret.
 
-OJO, que si existe previamente el directorio `/etc/config` será eliminado su contenido.
+NOTE, if the `/etc/config` directory previously exists, its contents will be deleted.
 
-Referencia: https://kubernetes.io/docs/concepts/configuration/secret/#using-secrets-as-files-from-a-pod
+Reference: https://kubernetes.io/docs/concepts/configuration/secret/#using-secrets-as-files-from-a-pod
