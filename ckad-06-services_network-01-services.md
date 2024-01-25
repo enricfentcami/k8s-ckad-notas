@@ -4,74 +4,77 @@
 
 https://kubernetes.io/docs/concepts/services-networking/service/
 
-Exponer una aplicación de un Pod como un servicio de red, para que pueda ser accedido por otros Pods.
+Expose a Pod application as a network service, so that it can be accessed by other Pods.
 
 Service Types:
-* NodePort service: Escucha en un puerto del nodo y redirige las peticiones de ese puerto al puerto del Pod de la app. **Exponer hacia fuera un servicio.**
-* Cluster IP: IP virtual dentro del clúster para habilitar la comunicación **interna** entre diferentes servicios como: De un grupo de front-end servers a un grupo de back-end servers. Valor por defecto.
-* Load balancer: Balanceo de carga. Distribuir carga entre distintos Pods.
+* NodePort service: Listens on a node port and redirects requests from that port to the app's Pod port. **Expose a service outside the cluster.**
+* Cluster IP: Virtual IP within the cluster to enable **internal** communication between different services such as: From a group of front-end servers to a group of back-end servers. Default value.
+* Load balancer: Load balancing. Distribute load between different Pods.
 
-IMPORTANTE: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+IMPORTANT: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
 
-### **1.2. Comandos**
+### **1.2. Commands**
+
+Create a service from a YAML file: 
 
 `kubectl create -f service-definition.yaml`
 
+Get available services from current namespace:
+
 `kubectl get services`
 
-#### Crear servicio desde comando (exponer pod o deployment):
+#### Create service from command (expose pod or deploy):
 
-`kubectl expose deployment webapp-deployment --type=NodePort --port=80 --name=webapp-service -n webapp-ns --dry-run -o yaml > service-webapp.yaml`
+`kubectl expose deployment webapp-deployment --type=NodePort --port=80 --name=webapp-service -n webapp-ns --dry-run=client -o yaml > service-webapp.yaml`
 
                     ^             ^                 ^             ^               ^                 ^           ^
-                Qué tipo     Nombre deploy.      Tipo serv.     Puerto       Nombre serv.       Namespace     No ejecutarlo
+                Expose type   Deploy name      Service type      Port       Service name        Namespace    Dont execute
 
-Importante:
-* El selector pone por defecto el `name: nginx-ingress` que es el label del deployment
-* El namespace no lo incluye en el YAML, debe hacerse manualmente
-* El NodePort fijo '30080' se pone manualmente
+Important:
+* The selector defaults to `name: nginx-ingress`, which is the deployment label
+* The namespace is included in the YAML because we specify it with `-n webapp-ns`. If not it doesn't add any namespace spec.
+* Fixed NodePort like '30080' will be set manually. If not specified the service will have an available port.
 
-
-Eliminar el service:
+Delete the service:
 
 `kubectl delete service myapp-service`
 
 ## **2. NodePort**
 
-El puerto que se abre en el nodo va del 30000 al 32767. El puerto se abre en el clúster (nodos worker): `http://192.168.1.2:30008`
+The port opened on the node ranges from 30000 to 32767. The port opened on the cluster (worker nodes): `http://192.168.1.2:30008`
 
-Ejemplo de Service:
+Service example:
 ```yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: myapp-service
 spec:
-  type: NodePort      # Default es ClusterIP
+  type: NodePort      # Default is ClusterIP
   ports:
-    - targetPort: 80  # Si no se especifica se coge el mismo que 'port'
-      port: 80        # Obligatorio
-      nodePort: 30008 # Si no se especifica se asigna automáticamente
+    - targetPort: 80  # If it is not specified, the same as 'port' is taken
+      port: 80        # Mandatory
+      nodePort: 30008 # If not specified, it is assigned automatically.
   selector:
-    app: myapp        # Labels del Pod
+    app: myapp        # Pod labels (also specified in the Deployment)
     type: front-end
 ```
 
-#### Redirección del tráfico:
+#### Traffic redirection:
 
-Al tener varios Pods que encajan en el selector del Service, balancea aleatoriamente las peticiones que le llegan. Tiene un load balancer interno.
+By having several Pods that matches the Service selector, it randomly balances the requests that come to it. It has an internal load balancer.
 
-Si los Pods están distribuidos en diferentes nodos del clúster, Kubernetes crea el servicio transversal a los workers y es indiferente a qué worker se acceda para que balancee las peticiones entre todos los Pods de todos los nodos.
+If the Pods are distributed in different nodes of the cluster, Kubernetes creates the service transversal to the workers and it does not matter which worker is accessed so that it balances the requests between all the Pods of all the nodes.
 
-Acceso al Pod desde la red interna con IP del worker:
+Access to the Pod from the internal network with worker IP:
 
 `curl http://192.168.1.2:30008`
 
 ## **2. ClusterIP**
 
-Se asigna una IP del clúster al servicio como punto de acceso y se publica el puerto indicado en el servicio: `http://10.96.127.123:80`
+A cluster IP is assigned to the service as an access point and the indicated port is published to the service: `http://10.96.127.123:80`
 
-Ejemplo de Service:
+Service example:
 ```yaml
 apiVersion: v1
 kind: Service
@@ -79,11 +82,11 @@ metadata:
   name: back-end-service
 
 spec:
-  type: ClusterIP     # Default es ClusterIP, no hace falta especificarlo
+  type: ClusterIP     # Default is ClusterIP, no need to specify
   ports:
-    - targetPort: 80  # Si no se especifica se coge el mismo que 'port'
-      port: 80        # Obligatorio
+    - targetPort: 80  # If it is not specified, the same as 'port' is taken
+      port: 80        # Mandatory
   selector:
-    app: myapp        # Labels del Pod
+    app: myapp        # Pod labels (also specified in the Deployment)
     type: back-end
 ```

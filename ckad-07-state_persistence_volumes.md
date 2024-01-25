@@ -1,10 +1,10 @@
 # STATE PERSISTENCE - Volumes & Persistent Volumes
 
-El almacenamiento dentro de un Pod es volátil o transient. Se utilizan volúmenes para persistir datos fuera del Pod.
+Storage within a Pod is volatile or transient. Volumes are used to persist data outside of the Pod.
 
 ## **1. Volumes & mount**
 
-Montar un volumen dentro del Pod con almacenamiento en el host (solo util en single-node):
+Mount a volume inside the Pod with storage on the host (only useful on single-node):
 
 ```yaml
 apiVersion: v1
@@ -31,11 +31,11 @@ spec:
 
 ### **1.1. Volume Types**
 
-Kubernetes dispone de muchos tipos diferentes como: NFS, ceph, AWS EBS, ...
+Kubernetes has many different types such as: NFS, ceph, AWS EBS, ...
 
 https://kubernetes.io/docs/concepts/storage
 
-Ejemplo con AWS EBS (Elastic Block Store):
+AWS EBS example (Elastic Block Store):
 ```yaml
 volumes:
 - name: data-volume
@@ -46,11 +46,11 @@ volumes:
 
 ## **2. Persistent Volumes**
 
-Pool de volúmenes de almacenamiento para todo el clúster que lo configura un administrador.
+Pool of storage volumes for the entire cluster that is configured by an administrator.
 
-Los usuarios pueden seleccionar el almacenamiento de este pool utilizando Persistent Volume Claims (PVC).
+Users can select storage from this pool using Persistent Volume Claims (PVC).
 
-Ejemplo Persitent Volume:
+Persitent Volume example:
 ```yaml
 apiVersion: v1
 kind: PersitentVolume
@@ -61,15 +61,14 @@ spec:
     - ReadWriteOnce
   capacity:
     storage: 1Gi
-#  hostPath:              # Path del nodo. No recomendado en producción
+#  hostPath:              # Path of the node. Not recommended in production
 #    path: /tmp/data
-  awsElasticBlockStore:   # Es mejor utilizar un servicio externo
+  awsElasticBlockStore:   # It is better to use an external service
     volumeID: <volume-id>
     fsType: ext4
-
 ```
 
-### **2.1. Comandos**
+### **2.1. Commands**
 
 `kubectl create -f pv-definition.yaml`
 
@@ -84,34 +83,34 @@ Access modes:
 
 https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reclaim-policy
 
-Al eliminar el PVC el PV puede quedarse huérfano. Por defecto los PV tienen la política `persistentVolumeReclaimPolicy` a `Retain` que espera que el PV se vuelva a reclamar manualmente por otro PVC.
+By eliminating PVC the PV can become orphaned. By default PVs have the policy `persistentVolumeReclaimPolicy` to `Retain` which expects the PV to be manually reclaimed by another PVC.
 
-Otras opciones son `Recycle` y `Delete`. Se describen en la documentación
+Other options are `Recycle` and `Delete`. They are described in the documentation.
 
 ## **3. Persistent Volume Claims**
 
-El admin crea los Persistent Volumes y los usuarios los Persitent Volume Claims para utilizar los PV. Además están en namespaces diferentes.
+The admin creates the Persistent Volumes and the users create the Persitent Volume Claims to use the PVs. They are also in different namespaces.
 
-Un PVC solo puede estar enlazado a un PV y viceversa (one-to-one), y pueden existir varios PV que encajen con la configuración del PVC. Para eso se utilizan labels.
+A PVC can only be linked to one PV and vice versa (one-to-one), and there can be several PVs that match the PVC configuration. For that, labels are used.
 
-Label en Persitent Volume:
+Label in Persistent Volume:
 ```yaml
 labels:
   name: my-pv
 ```
 
-Selector de label en Persitent Volume Claim:
+Label selector in Persistent Volume Claim:
 ```yaml
 selector:
   matchLabels:
     name: my-pv
 ```
 
-OJO: 
-* Si el PV tiene más capacidad que el PVC, el espacio restante no podrá se utilizado por otro PVC.
-* Si el PVC no tiene PV disponible se quedará en estado "Pending" hasta que exista un PV que le encaje.
-
-Ejemplo de Persitent Volume Claim:
+NOTE:
+* If the PV has more capacity than the PVC, the remaining space cannot be used by another PVC.
+* If the PVC does not have a PV available, it will remain in the "Pending" state until there is a PV that fits it.
+* 
+Persitent Volume Claim example:
 ```yaml
 apiVersion: v1
 kind: PersitentVolumeClaim
@@ -125,11 +124,11 @@ spec:
       storage: 500Mi
 ```
 
-Al crearlo, encajará con el PV creado en el punto 1 y hará el binding por los criterios:
-* Encaja el tamaño
-* Encajan Access Modes
-
-### **3.1. Comandos**
+When created, it will match the PV created in point 1 and will bind according to the criteria:
+* Fits size
+* Fit Access Modes
+* 
+### **3.1. Comamnds**
 
 `kubectl create -f pvv-definition.yaml`
 
@@ -162,29 +161,3 @@ spec:
 The same is true for ReplicaSets or Deployments. Add this to the pod template section of a Deployment on ReplicaSet.
 
 Reference URL: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#claims-as-volumes
-
-
-
-### **2.1. Comandos**
-
-`kubectl create -f network-policy-definition.yaml`
-
-`kubectl get networkpolicy`
-
-`kubectl get networkpolicy payroll-policy`
-
-`kubectl describe networkpolicy payroll-policy`
-
-Network policy no sale en el `get all`:
-
-`kubectl get networkpolicy --all-namespaces`
-
-`kubectl get networkpolicy -n app-space`
-
-Eliminar el network policy:
-
-`kubectl delete networkpolicy payroll-policy`
-
-OJO: No existe un atajo para generar un networkpolicy por comando, hay que crear el yaml desde 0
-
-

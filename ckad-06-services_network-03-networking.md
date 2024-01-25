@@ -4,42 +4,41 @@ https://kubernetes.io/docs/concepts/services-networking/network-policies/
 
 ## **1. Ingress & Egress rules**
 
-* Ingress: Tráfico de entrada a un servicio
-* Egress: Tráfico de salida del servicio hacia otro servicio
+* Ingress: Entry traffic to a service
+* Egress: Exit traffic from the service to another service
 
-La respuesta del servicio no influyen en los conceptos.
+The service response does not influence the concepts.
 
-USUARIO ---(ingress:80)-> WEB -(egress:5000)---(ingress:5000)-> BACKEND -(egress:3306)---(ingress:3306)-> DB
+USER ---(ingress:80)-> WEB -(egress:5000)---(ingress:5000)-> BACKEND -(egress:3306)---(ingress:3306)-> DB
 
-En el [ejemplo completo](ckad-08-others-03-example_network_policy.md) se puede ver cómo funciona. Es importante saber:
-* Un policyType sin configuración específica provoca la denegación de ese tipo de tráfico
-* Para permitir todo el tráfico ingress/egress, o no ponemos el policyType o dejamos su configuración vacía `- {}`
-
+You can see how it works in [full example](ckad-06-services_network-04-network_policy_example.md). It's important to know:
+* A policyType without specific configuration causes that type of traffic to be denied
+* To allow all ingress/egress traffic, we either do not set the policyType or leave its configuration empty `-{}`
 
 ## **2. Network security / policy**
 
-Kubernetes está configurado por defecto para permitir todo el tráfico ("all allow") desde cualquier pod a otros pods o servicios en el clúster.
+Kubernetes is configured by default to allow all traffic from any pod to other pods or services in the cluster.
 
-Network policies permite crear reglas para permitir o denegar el acceso a un pod desde otros pods:
-* DB Pod: Permite tráfico ingress desde BACKEND a través del puerto 3306
-* DB Pod: No permite tráfico desde WEB
+Network policies allow you to create rules to allow or deny access to a pod from other pods:
+* DB Pod: Allows ingress traffic from BACKEND through port 3306
+* BACKEND Pod: Does not allow traffic from WEB
 
-### Selectores y labels entran en acción, mediante reglas
+### Selectors and labels come into action, through rules
 
-DB Pod define su label:
+DB Pod defines its label:
 ```yaml
 labels:
   role: db
 ```
 
-Network policy selecciona el pod por la label definida:
+Network policy selects the pod by the defined label:
 ```yaml
 podSelector:
   matchLabels:
     role: db
 ```
 
-Se definen las reglas para permitir acceso desde el Pod de BACKEND(API):
+The rules are defined to allow access from the BACKEND Pod (API):
 ```yaml
 policyTypes:
  - Ingress
@@ -53,9 +52,9 @@ ingress:
     port: 3306
 ```
 
-_IMPORTANTE: Si no se pone el puerto en la config de ingress o egress se acepta cualquier puerto._
+_IMPORTANT: If the port is not entered in the ingress or egress config, any port is accepted._
 
-Ejemplo completo de network policy para DB Pod, permitir acceso desde BACKEND(API):
+Complete example of network policy for DB Pod, allow access from BACKEND(API):
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -77,9 +76,9 @@ spec:
       port: 3306
 ```
 
-Ejemplo completo de 'internal':
-* Acceso entrada desde 'web' por 8080 con 'ingress'
-* Acceso salida 'payroll' por 8080 y 'mysql' por 3306 con 'egress'
+Full example of 'internal':
+* Input connection from 'web' using port 8080 with 'ingress'
+* Output connection to 'payroll' by 8080 and 'mysql' by 3306 with 'egress'
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -118,10 +117,9 @@ spec:
     ports:
     - protocol: TCP
       port: 3306
-
 ```
 
-### **2.1. Comandos**
+### **2.1. Comamnds**
 
 `kubectl create -f network-policy-definition.yaml`
 
@@ -131,16 +129,14 @@ spec:
 
 `kubectl describe networkpolicy payroll-policy`
 
-Network policy no sale en el `get all`:
+Network policy does not appear in the `get all`:
 
 `kubectl get networkpolicy --all-namespaces`
 
 `kubectl get networkpolicy -n app-space`
 
-Eliminar el network policy:
+Delete the network policy:
 
 `kubectl delete networkpolicy payroll-policy`
 
-OJO: No existe un atajo para generar un networkpolicy por comando, hay que crear el yaml desde 0
-
-
+NOTE: There is no shortcut to generate a networkpolicy by command, you have to create the yaml from scratch

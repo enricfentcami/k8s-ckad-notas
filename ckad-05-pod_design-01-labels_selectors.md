@@ -4,11 +4,11 @@
 
 https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 
-- Labels = Etiquetas que indican características
-- Selectors = Selección según características
-- Annotations = Metadatos para enriquecer los datos del objeto (solo informativos)
+- Labels = Labels that indicate characteristics
+- Selectors = Selection according to characteristics
+- Annotations = Metadata to enrich the object data (extend configuration of some objects)
 
-Ejemplo de Pod:
+Pod example:
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -28,19 +28,19 @@ spec:
       image: simple-webapp
 ```
 
-Crear Pods con labels (o deployments):
+Create Pods with labels (or deployments):
 
 `kubectl run test1 --image nginx --labels tier=front,app=nginx`
 
 `kubectl run test2 --image nginx -l tier=front,app=nginx`
 
-Seleccionar Pods por label con kubectl:
+Select Pods by label with kubectl:
 
 `kubectl get pods --selector app=app1`
 
 `kubectl get pods -l app=app1`
 
-Seleccionar Pods por varias labels:
+Select Pods by various labels:
 
 `kubectl get pods --selector bu=finance,env=prod,tier=frontend`
 
@@ -48,15 +48,15 @@ Seleccionar Pods por varias labels:
 
 `kubectl get pods -l bu=finance,env=prod,tier!=frontend`
 
-### Ejemplos:
+### Examples:
 
-Ejemplo de ReplicaSet:
+ReplicaSet example:
 ```yaml
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
   name: simple-webapp
-  labels: # Etiquetas del ReplicaSet
+  labels: # Labels of the ReplicaSet
     name: simple-webapp
     app: app1
     function: front-end
@@ -64,18 +64,19 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: app1 # Para seleccionar qué Pods encajan con este RS
+      app: app1 # To select which Pods matches this RS
   template:
     metadata:
       labels:
-        app: app1 # Hará match con el selector del RS
+        app: app1 # Will match the RS selector
         function: front-end
     spec:
       containers:
         - name: simple-webapp
           image: simple-webapp
 ```
-Ejemplo de Service, para el Pod anterior:
+
+Example of Service, for the previous Pod:
 ```yaml
 apiVersion: v1
 kind: Service
@@ -83,7 +84,7 @@ metadata:
   name: simple-webapp-service
 spec:
   selector:
-    app: app1 # Para seleccionar qué Pods encajan con este Service
+    app: app1 # To select which Pods matches with this Service
   ports:
     - protocol: TCP
       port: 80

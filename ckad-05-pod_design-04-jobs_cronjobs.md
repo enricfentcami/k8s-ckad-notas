@@ -4,9 +4,9 @@
 
 https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/
 
-Por defecto, Kubernetes al ejecutar un pod que ejecuta una acción y termina lo ejecuta una y otra vez debido a la política `restartPolicy` que por defecto es `Always`. Para hacer que se ejecute una vez se haría con la policy `Never`.
+By default, Kubernetes when running a Pod that executes an action and terminates, executes it again and again due to the `restartPolicy` policy which defaults to `Always`. To make it run once you would do it with the `Never` policy.
 
-Ejemplo de Pod:
+Pod example:
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -20,11 +20,11 @@ spec:
     restartPolicy: Never
 ```
 
-### **1.1. Definir un Job**
+### **1.1. Define a Job**
 
-Se necesita un manager que pueda crear tantos Pods como sean requeridos para realizar una tarea y que finalice, por ejemplo en procesamiento paralelo de datos.
+A manager is needed that can create as many Pods as are required to perform a task to complete, for example in parallel data processing.
 
-Ejemplo de Job:
+Job example:
 ```yaml
 apiVersion: batch/v1
 kind: Job
@@ -40,35 +40,35 @@ spec:
         restartPolicy: Never
 ```
 
-### **1.2. Comandos**
+### **1.2. Commands**
 
 `kubectl create -f job-definition.yaml`
 
 `kubectl get jobs`
 
-Se puede ver el Pod creado con el STATUS `completed` con 0 RESTARTS
+You can see the Pod created with the STATUS `completed` with 0 RESTARTS
 
 `kubectl get pods`
 
-En este caso el resultado está en el log del Pod:
+In this case the result is in the Pod log:
 
 `kubectl logs math-add-job-xxxxx`
 
 > `5`
 
-Eliminar el job:
+Delete the job:
 
 `kubectl delete job math-add-job`
 
-#### Ejemplos en la vida real
+#### Examples in real life
 
-Procesamiento de imágenes, reports + envío de email...
+Image processing, reports + email sending, migration process...
 
 ### **1.3. Multiple Pods**
 
-Se indica el número de SUCCESSFUL que se quiere tener. Los pods se generan secuencialmente cuando el anterior ha finalizado.
+The number of SUCCESSFUL executions you want to have will be defined by the attribute `completions`. Pods are created sequentially when the previous one has finished.
 
-Ejemplo de Job:
+Job example:
 ```yaml
 apiVersion: batch/v1
 kind: Job
@@ -85,13 +85,13 @@ spec:
         restartPolicy: Never
 ```
 
-Cuando un job falla se ejecuta otro hasta que se completan los SUCCESSFUL que se habían definido con `completions`
+When a job fails, another is executed until the number of SUCCESSFUL executions that had been defined with `completions` is completed.
 
-### **1.4. Multiple Pods en paralelo**
+### **1.4. Multiple Pods in parallel**
 
-Se indica el número de Pods a crear en paralelo con `parallelism`.
+The number of Pods to be created in parallel is indicated with `parallelism`.
 
-Ejemplo de Job:
+Job example:
 ```yaml
 apiVersion: batch/v1
 kind: Job
@@ -109,11 +109,11 @@ spec:
         restartPolicy: Never
 ```
 
-Creará 3 Pods a la vez y si alguno falla volverá a crearlo hasta que se completen los indicados en `completions`.
+It will create 3 Pods at a time and if any fail it will create them again until those indicated in `completions` are completed.
 
-### **1.5. Limitar el número de intentos**
+### **1.5. Limit the number of attempts**
 
-Se permite máximo el número de fallos indicados por `backoffLimit`.
+The maximum number of failures allowed is defined with the `backoffLimit` attribute.
 
 ```yaml
 apiVersion: batch/v1
@@ -135,9 +135,9 @@ spec:
 
 ## **2. CronJobs**
 
-Jobs programados como 'crontab'.
+Jobs scheduled as 'crontab'.
 
-Ejemplo de CronJob:
+CronJob example:
 ```yaml
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -157,12 +157,16 @@ spec:
             restartPolicy: Never
 ```
 
-### **2.2. Comandos**
+### **2.2. Commands**
 
 `kubectl create -f cron-job-definition.yaml`
 
 `kubectl get cronjob`
 
-Eliminar el cron job:
+Delete the cronJob:
 
 `kubectl delete cronjob reporting-cron-job`
+
+Create a job from an existing cronjob:
+
+`kubectl create job --from=cronjob/pgdump pgdump-manual-001`

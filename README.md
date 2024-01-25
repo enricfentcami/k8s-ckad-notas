@@ -1,6 +1,14 @@
-# Notas Kubernetes CKAD 
+# Notes Kubernetes CKAD 
 
-Notes for the Kubernetes CKAD taken during the Udemy/KodeKloud exam preparation course.
+Notes for the Kubernetes CKAD taken during the Udemy/KodeKloud exam preparation course: https://www.udemy.com/course/certified-kubernetes-application-developer
+
+Reference documentation:
+* Kubectl quick reference: https://kubernetes.io/docs/reference/kubectl/quick-reference/ 
+    (_It is recommended to have it open during the exam as an entry point to the official documentation_)
+* Use the kubectl `explain` command to get all resource fields in the CLI:
+  * `kubectl explain pod`
+  * `kubectl explain pod.spec`
+  * `kubectl explain pod.spec.containers.envFrom`
 
 ## Content
 
@@ -58,23 +66,3 @@ There are other files with various exercises and notes:
 - [Notes about default requirements](ckad-note_detault_resource_req.md)
 - [Notes about editing Pods](ckad-note_edit-pods.md)
 - [Tips about formatting](ckad-tips_formatting.md)
-
-### Deprecated index, previous to 2021 changes
-
-- [Core Concepts - 13%](ckad-01-core_concepts.md)
-- Configuration - 18%
-  - [ConfigMap & Secrets](ckad-02-config-01-properties.md)
-  - [Resources](ckad-02-config-02-resources.md)
-  - [Security context & Service account](ckad-02-config-03-security.md)
-  - [Node affinity](ckad-02-config-04-affinity.md)
-- [Multi-container pods - 10%](ckad-03-multi_container_pods.md)
-- [Observability - 18%](ckad-04-observability.md)
-- Pod design - 20%
-  - [Labels & selectors](ckad-05-pod_design-01-labels_selectors.md)
-  - [Deployments: Rolling updates and rollbacks](ckad-05-pod_design-02-roll_deployments.md)
-  - [Jobs & cronjobs](ckad-05-pod_design-04-jobs_cronjobs.md)
-- Services and networking - 13%
-  - [Services](ckad-06-services_network-01-services.md)
-  - [Ingress](ckad-06-services_network-02-ingress.md)
-  - [Network policy](ckad-06-services_network-03-networking.md)
-- [State persistence - 8%](ckad-07-state_persistence_volumes.md)

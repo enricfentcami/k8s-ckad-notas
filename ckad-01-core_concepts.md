@@ -36,7 +36,9 @@ Store the YAML in file:
 
 Add arguments `args` to the container, that will be executed on startup. After the `--` are the arguments:
 * Bash: `kubectl run pod1 --image=bash -- bash -c "hostname >> /tmp/hostname && sleep 1d"`
+  * Check if it worked using the command: `kubectl exec pod1 -- bash -c "cat /tmp/hostname"`
 * Sh: `kubectl run pod2 --image=busybox -- /bin/sh -c "hostname >> /tmp/hostname && sleep 1d"`
+  * Check if it worked using the command: `kubectl exec pod2 -- sh -c "cat /tmp/hostname"`
 
 Generate Pod Manifest YAML file "-o yaml". Don't create it on Kubernetes with "--dry-run=client":
 
@@ -74,7 +76,7 @@ Using `-i --rm` you create a temporal Pod that will be deleted when process fini
 
 Adding argument `-t` it opens the terminal and deletes the pod once the user exists from the container:
 
-`kubectl run pod-tm --image=busybox -it --rm -- /bin/sh`
+`kubectl run pod-tmp --image=busybox -it --rm -- /bin/sh`
 
 #### **2.2.2. Commands and arguments**
 
@@ -132,6 +134,7 @@ spec:
 ```
 
 NOTE: If we have previously created Pods that meet the `selector`, the "excess" ones will be eliminated to meet the number of replicas. If there are less than the number of replicas, only those necessary to meet the condition will be created.
+Also, if we scale to 0 the ReplicaSet i will delete all pods that meets the selector.
 
 ### **2.3. Deployment**
 
@@ -143,27 +146,27 @@ Generate a Deployment YAML file "-o yaml". Don't create it in Kubernetes with "-
 
 **Create deployment with replicas**
 
-Create YAML and add replicas:
+* Create YAML and add replicas:
+  
+  `kubectl create deployment --image=nginx nginx --dry-run=client -o yaml > nginx-deployment.yaml`
+  
+  Open the YAML file and add the necessary replicas, the default is 1. Then launch the creation from the file.
 
-`kubectl create deployment --image=nginx nginx --dry-run=client -o yaml > nginx-deployment.yaml`
+* Create command with replicas:
+  
+  `kubectl create deployment webapp --image=kodekloud/webapp-color --replicas=3`
 
-Open the YAML file and add the necessary replicas, the default is 1. Then launch the creation from the file.
-
-Create with replicas:
-
-`kubectl create deployment webapp --image=kodekloud/webapp-color --replicas=3`
-
-Create without replicas and then scale it:
-
-`kubectl create deployment webapp --image=kodekloud/webapp-color`
-
-`kubectl scale deployment/webapp --replicas=3`
+* Create without replicas and then scale it:
+  
+  `kubectl create deployment webapp --image=kodekloud/webapp-color`
+  
+  `kubectl scale deployment/webapp --replicas=3`
 
 NOTE: Labels cannot be set by command, this does not work:
 
 `kubectl create deployment webapp --image=kodekloud/webapp-color --replicas=3 --labels=app=kodekloud-webapp-color` ->  `unknown flag: --labels`
 
-YAML Example:
+YAML Example with labels:
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -190,6 +193,10 @@ spec:
 
 ### **2.4. Service**
 
+A Service is a method for exposing a network application that is running as one or more Pods in your cluster.
+
+This topic will be described in the [Network Services](ckad-06-services_network-01-services.md) section.
+
 Service for redis pod:
 
 `kubectl expose pod redis --name=redis-service --port=6379 --type=ClusterIP --selector=tier=db`
@@ -212,7 +219,7 @@ spec:
 
 Example of a Pod and Service by command:
 
-`kubectl run test-web --image=nginx -l app=front` 
+`kubectl run test-web --image=nginx -l app=front`
 
 `kubectl expose pod test-web --name=test-web-service --port=80 --selector=app=front`
 
@@ -223,7 +230,7 @@ metadata:
   labels:
     app: front
   name: test-web
-  namespace: eebb
+  namespace: ckad
 spec:
   containers:
   - image: nginx
@@ -237,7 +244,7 @@ metadata:
   labels:
     app: front
   name: test-web-service
-  namespace: eebb
+  namespace: ckad
 spec:
   ports:
   - port: 80
@@ -254,7 +261,10 @@ spec:
 Get objects from a namespace:
 - `kubectl get pods -n test`
 - `kubeclt get pods --namespace=test` (long version)
-- `kubectl get pods --all-namespaces`
+
+Get objects from all namespace:
+- `kubectl get pods -A`
+- `kubectl get pods --all-namespaces` (long version)
 
 YAML Example:
 ```yaml
@@ -288,18 +298,22 @@ Force pod deletion:
 
 `kubectl delete -f pod.yaml`
 
-## **5. Context and namespaces**
+## **5. Kubectl config contexts and namespaces**
 
-See data of context and default namespace:
+See kubeConfig manifest:
+
+`kubectl config view`
+
+See data of available contexts and default namespace:
 
 `kubectl config get-contexts`
 
-Set default context, cluster change:
+Set the default context, cluster change:
 
 `kubectl config use-context my-cluster-name`
 
 Set a new default namespace for the current context (cluster):
 
-`kubectl config set-context --current --namespace=ggckad-s2`
+`kubectl config set-context --current --namespace=ckad`
 
-IMPORTANT: Very useful in the exam because the questions have their own namespace
+IMPORTANT: Very useful in the exam because the questions have their own namespace, but keep in mind to change it if required

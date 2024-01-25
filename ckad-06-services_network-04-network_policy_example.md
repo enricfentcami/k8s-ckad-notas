@@ -24,10 +24,10 @@
 
 ## **NETWORK POLICIES**
 
-Network policy del pod/service 1:
-* Acceso desde el exterior del nodo
-* Solo puede acceder a pod/service 2 por puerto 80
-
+Network policy of pod/service 1:
+* Access from outside the node allowed
+* You can only access to pod/service 2 via port 80
+* 
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -38,13 +38,13 @@ spec:
     matchLabels:
       run: nginx-1
 
-  # Un policyType sin configuración provoca la denegación de ese tipo de tráfico
+  # An unconfigured policyType causes that type of traffic to be denied
   policyTypes:
   - Ingress
   - Egress
 
-  # Para permitir todo el tráfico ingress, si ponemos el policyType
-  # Es lo mismo que no poner el policyType ni esta config
+  # To allow all ingress traffic, if we set the policyType
+  # It is the same as not putting the policyType in this config
   ingress: 
   - {}
 
@@ -58,9 +58,9 @@ spec:
       port: 80
 ```
 
-Network policy del pod/service 2:
-* Acceso solo desde pod/service 1 por el puerto 80
-* Solo puede acceder a pod/service 3 por puerto 80
+Network policy of pod/service 2:
+* Access only from pod/service 1 on port 80
+* You can only access pod/service 3 via port 80
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -95,9 +95,9 @@ spec:
       port: 80
 ```
 
-Network policy del pod/service 3:
-* Acceso solo desde pod/service 2 por el puerto 80
-* No puede acceder a otros Pods
+Network policy of pod/service 3:
+* Access only from pod/service 2 on port 80
+* Cannot access to other Pods
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -111,7 +111,7 @@ spec:
 
   policyTypes:
   - Ingress
-  - Egress # Egress sin config deniega el tráfico de salida
+  - Egress # Egress without config denies outbound traffic
 
   ingress:
   - from:
@@ -123,11 +123,11 @@ spec:
       port: 80
 ```
 
-## **PRUEBAS**
+## **TESTS**
 
-1. Se crean todos los Pods, services y network policy.
+1. All Pods, services and network policy are created.
 
-2. Listado de los services:
+2. List of services:
 ```
 NAME                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)
 nginx-service-1       NodePort    10.244.172.27    <none>        80:31517/TCP
@@ -136,14 +136,12 @@ nginx-service-3       ClusterIP   10.244.199.185   <none>        80/TCP
 nginx-service-4       ClusterIP   10.244.96.152    <none>        80/TCP
 ```
 
-3. Acceso a cada uno de los Pods para verificar el tráfico
+3. Access to each of the Pods to verify traffic
    
    `kubectl exec -it nginx-1 -- /bin/bash`
 
-4. Ejecución de los CURL para verificar el acceso:
+4. Execution of CURLs to verify access:
    1. Pod 1: `curl 10.244.172.27`
    2. Pod 2: `curl 10.244.247.5`
    3. Pod 3: `curl 10.244.199.185`
    4. Pod 4: `curl 10.244.96.152`
-
-   

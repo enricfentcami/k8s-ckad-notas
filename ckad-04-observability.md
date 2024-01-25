@@ -4,12 +4,11 @@
 
 ## **1.1. Readiness probes**
 
-Se utilizan para comprobar que la aplicación dentro de un Pod está lista para recibir peticiones. Realizando un test a un API, obtener un HTML, lanzar un comando contra BD a través de un script interno del contenedor, ...
+They are used to verify that the application within a Pod is ready to receive requests. Performing a test on an API, obtaining an HTML, launching a command against the DB through an internal script of the container, ...
 
-Cuando un Pod se ejecuta está "Ready" y los servicios pueden empezar a mandarles peticiones, pero puede que la aplicación dentro del Pod tarde unos minutos en levantarse por lo que se estará accediendo a un Pod que realmente no está listo.
+When a Pod is running it is "Ready" and the services can start sending requests to it, but it may take a few minutes for the application inside the Pod to wake up so you will be accessing a Pod that is not really ready.
 
-Ejemplo:
-
+Example:
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -29,9 +28,9 @@ spec:
           port: 8080
 ```
 
-Hasta que el `readinessProbe` no está OK, el Pod no pasa al estado "Ready".
+Until the `readinessProbe` is OK, the Pod does not go to the "Ready" state.
 
-Tipos de test:
+Test types:
 - HTTP Test:
     ```yaml
     readinessProbe:
@@ -39,7 +38,7 @@ Tipos de test:
         path: /api/ready
         port: 8080
     ```
-- TCP Test (util para BDs):
+- TCP Test (useful for DBs):
     ```yaml
     readinessProbe:
       tcpSocket:
@@ -54,26 +53,25 @@ Tipos de test:
           - /app/is_ready
     ```
 
-Parámetros de configuración del test:
+Test configuration parameters:
 
 ```yaml
 readinessProbe:
   httpGet:
     path: /api/ready
     port: 8080
-  initialDelaySeconds: 10 # tiempo de espera inicial
-  periodSeconds: 5 # cada cuanto hacer el test
-  failureThreshold: 8 # numero de reintentos si falla el test, 3 intentos por defecto
+  initialDelaySeconds: 10 # initial waiting time
+  periodSeconds: 5 # how often to take the test
+  failureThreshold: 8 # number of retries if the test fails, 3 attempts by default
 ```
 
 ## **1.2. Liveness Probes**
 
-Se utilizan para comprobar que la aplicación dentro de un Pod está en marcha, es un health check, y puede seguir recibiendo peticiones. Realizando un test a un API, obtener un HTML, lanzar un comando contra BD a través de un script interno del contenedor, ...
+They are used to check that the application within a Pod is running, it is a health check, and can continue receiving requests. Performing a test on an API, obtaining an HTML, launching a command against the DB through an internal script of the container, ...
 
-Si la aplicación cae, el contenedor no se entera y sigue "Ready", provocando que la aplicación no responda y sigan llegando peticiones.
+If the application goes down, the container does not know and remains "Ready", causing the application to not respond and requests to continue arriving.
 
-Ejemplo:
-
+Example:
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -93,9 +91,9 @@ spec:
           port: 8080
 ```
 
-Mientras el `livenessProbe` está OK, el Pod seguirá en el estado "Ready".
+As long as the `livenessProbe` is OK, the Pod will remain in the "Ready" state.
 
-Tipos de test:
+Test types:
 - HTTP Test:
     ```yaml
     livenessProbe:
@@ -103,7 +101,7 @@ Tipos de test:
         path: /api/healthy
         port: 8080
     ```
-- TCP Test (util para BDs):
+- TCP Test (useful for DBs):
     ```yaml
     livenessProbe:
       tcpSocket:
@@ -118,52 +116,51 @@ Tipos de test:
           - /app/is_healthy
     ```
 
-Parámetros de configuración del test:
+Test configuration parameters:
 
 ```yaml
 livenessProbe:
   httpGet:
-    path: /api/ready
+    path: /api/live
     port: 8080
-  initialDelaySeconds: 10 # tiempo de espera inicial
-  periodSeconds: 5 # cada cuanto hacer el test
-  failureThreshold: 8 # numero de reintentos si falla el test, 3 intentos por defecto
+  initialDelaySeconds: 10 # initial waiting time
+  periodSeconds: 5 # how often to take the test
+  failureThreshold: 8 # number of retries if the test fails, 3 attempts by default
 ```
 
 ## **3. Logs**
 
-Para Pods con un solo contenedor:
+For Pods with a single container:
 
 `kubectl logs -f my-pod`
 
-Para Pods con múltiples contenedores, se debe especificar el nombre de cada contenedor:
+For Pods with multiple containers, the name of each container must be specified:
 
 `kubectl logs -f my-pod container-1`
 
-`-f` es "follow" para mostrar los logs en modo "tail"
+`-f` is "follow" to show the logs in "tail" mode
 
-Logs de hijos:
-* Logs de un job: `kubect logs job/busybox-job`
-* Logs de un deployment: `kubectl logs deployment/webapp-deployment`
-
+Children logs:
+* Job logs: `kubect logs job/busybox-job`
+* Logs of a deployment: `kubectl logs deployment/webapp-deployment`
 
 ## **4. Monitoring**
 
-Se utiliza "Metrics Server" y está disponible a nivel de clúster. Se instala bajo demanda.
+"Metrics Server" is used and is available at the cluster level. Installs on demand.
 
-Nodo contiene el agente Kubelet (responsables de recibir instrucciones del Kubernetes API y arrancar Pods en los nodos). Kubelet contiene un subcomponente llamado cAdvisor (Component Advisor) que es responsable de recoger métricas de rendimiento de los pods y exponearlas a través del Kubelet API y tenerlas disponibles para el Metrics Server.
+Node contains the Kubelet agent (responsible for receiving instructions from the Kubernetes API and starting Pods on the nodes). Kubelet contains a subcomponent called cAdvisor (Component Advisor) that is responsible for collecting performance metrics from the pods and exposing them through the Kubelet API and making them available to the Metrics Server.
 
-Para ver las métricas:
-- Nodos: `kubectl top node`
+To view metrics:
+- Nodes: `kubectl top node`
 - Pods: `kubectl top pod`
-
+- 
 ## **5. Debug pods**
 
-Básicamente es saber dónde ver la información de lo que ocurre con el Pod en caso de error.
+Basically it is knowing where to see the information about what happens with the Pod in case of an error.
 
-Eso se puede ver en el apartado "Events" dentro de la info completa del Pod con `kubectl describe pod my-pod`.
+This can be seen in the "Events" section within the complete Pod info with `kubectl describe pod my-pod`.
 
-Para ver todos los eventos ocurridos en el sistema (cada namespace tiene su propio registro):
+To view all events that have occurred on the system (each namespace has its own log):
 
 `kubectl get events`
 
@@ -175,10 +172,10 @@ Para ver todos los eventos ocurridos en el sistema (cada namespace tiene su prop
 
 https://kubernetes.io/docs/tasks/debug-application-cluster/get-shell-running-container/
 
-Acceso al bash:
+Access to the bash:
 
 `kubectl exec -it my-pod -- /bin/bash`
 
-Ejecutar un comando directamente:
+Run a command directly:
 
 `kubectl exec -it my-pod -- date -s '19 APR 2012 11:14:00'`

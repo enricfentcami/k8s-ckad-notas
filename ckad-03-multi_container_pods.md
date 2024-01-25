@@ -1,6 +1,6 @@
 # MULTI-CONTAINER PODS
 
-Dentro de un Pod pueden haber mútiples contenedores, no es lo habitual, pero hay casos que es necesario que dos aplicaciones "dependientes" se gestionen juntas y de ese modo, por ejemplo, compartirán volumen de datos.
+Within a Pod there can be multiple containers, it is not usual, but there are cases where it is necessary for two "dependent" applications to be managed together and in this way, for example, they will share data volume.
 
 ```yaml
 apiVersion: v1
@@ -19,25 +19,25 @@ spec:
 
 https://matthewpalmer.net/kubernetes-app-developer/articles/multi-container-pod-design-patterns.html
 
-## **Patrones de diseño**
+## **Design patterns**
 
 ![Design Patterns](./resources/images/multi-container-pod-design.png)
 
 ### **Sidecar**
 
-Ejemplo, desplegar un log-server junto al webapp para mandar los logs a un servidor central de logs.
+Example, deploy a log-server next to the webapp to send the logs to a central log server.
 
 ### **Adapter**
 
-Si ese servidor central recibe de varias apps, seguramente el formato de logs sea diferente. El contenedor Adapter procesa los logs antes de enviarlos al servidor central para homogeneizar.
+If that central server receives from several apps, the log format will surely be different. The Adapter container processes the logs before sending them to the central server for homogenization.
 
 ### **Ambassador**
 
-Si la aplicación se comunica con diferentes BDs durante el desarrollo (dev, pre, pro) hay que gestionar esto. Por lo que el contenedor Ambassador hará de proxy y todas las conexiones irán a localhost y se encargará de redirigirlas a la BD pertinente.
+If the application communicates with different DBs during development (dev, pre, pro) this must be managed. So the Ambassador container will act as a proxy and all connections will go to localhost and it will be responsible for redirecting them to the relevant DB.
 
-#### Ejemplo Sidecar
+#### Sidecar example
 
-Los contenedores comparte volumen para que el sidecar pueda leer los logs de la aplicación y procesarlos.
+The containers share volume so that the sidecar can read the application logs and process them.
 
 ```yaml
 apiVersion: v1

@@ -4,20 +4,23 @@
 
 https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
 
-Actúa como proxy para evitar múltiples proxies externos a Kubernetes para las redirecciones de un dominio a los servicios. Unifica el acceso en un único punto de entrada al clúster y enruta las peticiones.
+Acts as a proxy to avoid multiple proxies external to Kubernetes for redirects from a domain to services. It unifies access into a single entry point to the cluster and routes requests.
+* Ingress controller: Application like Nginx or Traefik to manage redirects
+* Ingress resources: Ingress configuration
 
-Ingress controller: Aplicación como Nginx o Traefik para gestionar las redirecciones
-Ingress resources: Configuración de ingress
+It is not included in Kubernetes by default.
 
-No está incluido en Kubernetes por defecto.
+### **1.2. Comamnds**
 
-### **1.2. Comandos**
+Create object from YAML file:
 
 `kubectl create -f igress-definition.yaml`
 
-`kubectl get ingress`
+Get available objects:
 
-Ingress no sale en el `get all`:
+`kubectl get ingress` or `kubectl get ing`
+
+Ingress does not appear in the `kubectl get all` command:
 
 `kubectl get ingress --all-namespaces`
 
@@ -27,54 +30,66 @@ Eliminar el ingress:
 
 `kubectl delete ingress ingress-wear`
 
-OJO: No existe un atajo para generar un ingress por comando, hay que crear el yaml desde 0
+NOTE: There is no shortcut to generate an input by command, you have to create the yaml from 0
 
 ## **2. Ingress resources**
 
-### **2.1. Ingress básico**
+### **2.1. Basic Ingress**
 
-No se necesitan reglas si solo hay un backend en el sistema.
+No rules are needed if there is only one backend in the system.
 
-Todo el tráfico de entrada se manda directamente al servicio configurado
+All incoming traffic is sent directly to the configured service.
 
-Ejemplo de Ingress:
+Ingress example:
 ```yaml
-apiVersion: extensions/v1beta1
-kind: Igress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: ingress-wear
+  name: ingress-wear-watch
 spec:
+  ingressClassName: nginx
   backend:
-    serviceName: wear-service
-    servicePort: 80
+    service:
+      name: wear-service
+      port:
+        number: 80
 ```
 
-### **2.2. Reglas**
+### **2.2. Rules**
 
-Enruta el tráfico dependiendo del path que le llega al ingress, lo manda a un servicio u otro
+Routes the traffic depending on the path that reaches the ingress, sending it to one service or another.
 
-#### Ejemplo de Ingress dentro de un mismo dominio (by Path):
+Path type is required and Prefix is commonly used, check documentation for more info: https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types
+
+#### Ingress example within the same domain (by Path):
 
 * `http://www.my-store.com/wear`
 * `http://www.my-store.com/watch`
 
 ```yaml
-apiVersion: extensions/v1beta1
-kind: Igress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: ingress-wear-watch
 spec:
+  ingressClassName: nginx
   rules:
     - http:
         paths:
           - path: /wear
+            pathType: Prefix
             backend:
-              serviceName: wear-service
-              servicePort: 80
+              service:
+                name: wear-service
+                port:
+                  number: 80
           - path: /watch
+            pathType: Prefix
             backend:
-              serviceName: watch-service
-              servicePort: 80
+              service:
+                name: watch-service
+                port:
+                  number: 80
 ```
 
 #### Ejemplo de Ingress en diferentes subdominios del dominio (by Host):
@@ -83,27 +98,36 @@ spec:
 * `http://watch.my-store.com`
 
 ```yaml
-apiVersion: extensions/v1beta1
-kind: Igress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: ingress-wear-watch
 spec:
+  ingressClassName: nginx
   rules:
     - host: wear.my-store.com
       http:
         paths:
-          backend:
-            serviceName: wear-service
-            servicePort: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: wear-service
+                port:
+                  number: 80
     - host: watch.my-store.com
       http:
         paths:
-          backend:
-            serviceName: watch-service
-            servicePort: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: watch-service
+                port:
+                  number: 80
 ```
 
-#### Ejemplo de Ingress en diferentes subdominios del dominio con diferentes paths (by Host + path):
+#### Example of Ingress on different subdomains of the domain with different paths (by Host + path):
 
 * `http://wear.my-store.com/`
 * `http://wear.my-store.com/support`
@@ -111,34 +135,47 @@ spec:
 * `http://watch.my-store.com/movies`
 
 ```yaml
-apiVersion: extensions/v1beta1
-kind: Igress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: ingress-wear-watch
 spec:
+  ingressClassName: nginx
   rules:
     - host: wear.my-store.com
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: wear-service
-              servicePort: 80
+              service:
+                name: wear-service
+                port:
+                  number: 80
           - path: /support
+            pathType: Prefix
             backend:
-              serviceName: wear-support-service
-              servicePort: 80
+              service:
+                name: wear-support-service
+                port:
+                  number: 80
     - host: watch.my-store.com
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: watch-service
-              servicePort: 80
+              service:
+                name: watch-service
+                port:
+                  number: 80
           - path: /movies
+            pathType: Prefix
             backend:
-              serviceName: watch-movies-service
-              servicePort: 80
+              service:
+                name: watch-movies-service
+                port:
+                  number: 80
 ```
 
 ## **3. FAQ - What is the rewrite-target option?**
@@ -157,13 +194,11 @@ We must configure Ingress to achieve the below. When user visits the URL on the 
 
 `http://<ingress-service>:<ingress-port>/wear` --> `http://<wear-service>:<port>/`
 
-
 Without the rewrite-target option, this is what would happen:
 
 `http://<ingress-service>:<ingress-port>/watch` --> `http://<watch-service>:<port>/watch`
 
 `http://<ingress-service>:<ingress-port>/wear` --> `http://<wear-service>:<port>/wear`
-
 
 Notice watch and wear at the end of the target URLs. The target applications are not configured with /watch or /wear paths. They are different applications built specifically for their purpose, so they don't expect /watch or /wear in the URLs. And as such the requests would fail and throw a 404 not found error.
 
@@ -174,21 +209,25 @@ To fix that we want to "ReWrite" the URL when the request is passed on to the wa
 In our case: replace("/path","/")
 
 ```yaml
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: test-ingress
-  namespace: critical-space
+  name: rewrite
   annotations:
+    # The call to "/pay" is internally redirected to "/" (rewrite-target)
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
-  - http:
-      paths:
-      - path: /pay      # La llamada a "/pay" se redirige internamente a "/" (rewrite-target)
-        backend:
-          serviceName: pay-service
-          servicePort: 8282
+    - http:
+        paths:
+          - path: /pay
+            pathType: Prefix
+            backend:
+              service:
+                name: pay-service
+                port:
+                  number: 8282
 ```
 
 ### In another example given here, this could also be:
@@ -196,20 +235,23 @@ spec:
 replace("/something(/|$)(.*)", "/$2")
 
 ```yaml
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: rewrite
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
-  name: rewrite
-  namespace: default
 spec:
+  ingressClassName: nginx
   rules:
-  - host: rewrite.bar.com
-    http:
-      paths:
-      - backend:
-          serviceName: http-svc
-          servicePort: 80
-        path: /something(/|$)(.*)
+    - host: rewrite.bar.com
+      http:
+        paths:
+          - path: /something(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: http-svc
+                port:
+                  number: 80
 ```

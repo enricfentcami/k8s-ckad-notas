@@ -1,39 +1,41 @@
 # OTHERS - Horizontal Pod Autoscaling
 
+NOTE: Not included in the CKAD exam
+
 https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 
 https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
 
 https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#autoscale
 
-## **1. Ejemplo**
+## **1. Example**
 
-Desplegar servicio y deployment de prueba (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#run-expose-php-apache-server):
+Deploy service and test deployment (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#run-expose-php-apache-server):
 
 `kubectl apply -f https://k8s.io/examples/application/php-apache.yaml`
 
-Crear autoescalado (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#create-horizontal-pod-autoscaler):
+Create autoscaling (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#create-horizontal-pod-autoscaler):
 
 `kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10`
 
-_Sacarlo a YAML sin ejecutarlo:_
+_Get it to YAML without executing it:_
 
 `kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10 --dry-run -o yaml > autoscaler.yaml`
 
-Comprobarlo:
+Check it:
 
 `kubectl get hpa`
 
-Añadir carga al POD (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#increase-load):
+Add work load to the Pod (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#increase-load):
 _(Ejecutar en otra consola)_
 
 `kubectl run -it --rm load-generator --image=busybox /bin/sh`
 
-Ejecutar bucle infinito:
+Run infinite loop:
 
 `while true; do wget -q -O- http://php-apache; done`
 
-Tras un minuto se ve que se está escalando el POD:
+After a minute you can see that the Pod is climbing:
 
 `kubectl get hpa`
 
@@ -49,7 +51,7 @@ NAME         READY   UP-TO-DATE   AVAILABLE   AGE
 php-apache   6/6     6            6           147m
 ```
 
-Al parar la ejecución de POD de carga, tras unos minutos, se ve que baja el número de replicas: 
+When you stop the loading Pod execution, after a few minutes, you see that the number of replicas drops:
 
 `kubectl get hpa`
 
