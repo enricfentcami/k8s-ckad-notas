@@ -138,7 +138,7 @@ The `operator: Exists` operator does not require values, it only checks that the
 
 More info about operators: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#operators
 
-### **4.1. Tipos de afinity**
+### **4.1. Affinity types**
 
 There are two types of node affinity:
 - `requiredDuringSchedulingIgnoredDuringExecution`: The scheduler can't schedule the Pod unless the rule is met. This functions like nodeSelector, but with a more expressive syntax.

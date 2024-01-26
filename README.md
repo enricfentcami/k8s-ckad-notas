@@ -63,6 +63,5 @@ There are other files with various exercises and notes:
   - [Mock exam 1](ckad-99-others-06-mock_exam_1.md)
   - [Mock exam 2](ckad-99-others-07-mock_exam_2.md)
 - [Horizontal Autoscaling - NOT INCLUDED IN CKAD](ckad-99-others-01-horizontal_autoscaling.md)
-- [Notes about default requirements](ckad-note_detault_resource_req.md)
 - [Notes about editing Pods](ckad-note_edit-pods.md)
 - [Tips about formatting](ckad-tips_formatting.md)
