@@ -14,7 +14,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: simple-webapp
-  labels: # Etiquetas del Pod
+  labels: # Pod labels
     name: simple-webapp
     app: app1
     function: front-end
@@ -28,7 +28,7 @@ spec:
       image: simple-webapp
 ```
 
-Create Pods with labels (or deployments):
+Create Pods with labels:
 
 `kubectl run test1 --image nginx --labels tier=front,app=nginx`
 

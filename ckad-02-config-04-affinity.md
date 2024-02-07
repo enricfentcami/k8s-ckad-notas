@@ -42,6 +42,8 @@ Note: The `-` in `NoSchedule` indicates that this taint will be removed.
 
 The condition is created to meet a taint, but it does not mean that a pod necessarily goes to that node.
 
+The taint is a labeled thing that has to be matched by a toleration.
+
 ```yaml
 apiVersion: v1
 kind: Pod

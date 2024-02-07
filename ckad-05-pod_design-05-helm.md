@@ -28,7 +28,7 @@ kind: ConfigMap
 metadata:
   name: app-config
 data:
-  USER_NAME: {{ .Values.worpressUsername}}
+  USER_NAME: {{ .Values.worpressUsername }}
 ```
 
 Other useful commands:

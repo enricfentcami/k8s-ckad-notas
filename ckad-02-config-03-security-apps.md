@@ -61,6 +61,10 @@ spec:
 
 ### **1.3. Capabilities (container level)**
 
+With Linux capabilities, you can grant certain privileges to a process without granting all the privileges of the root user. To add or remove Linux capabilities for a Container, include the capabilities field in the securityContext section of the Container manifest.
+
+Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-capabilities-for-a-container
+
 ```yaml
 apiVersion: v1
 kind: Pod

@@ -7,8 +7,8 @@ Understanding the API deprectation policy: https://kubernetes.io/docs/reference/
 * Rule #1: API elements may only be removed by incrementing the version of the API group.
 * Rule #2: API objects must be able to round-trip between API versions in a given release without information loss, with the exception of whole REST resources that do not exist in some versions.
 * Rule #3: An API version in a given track may not be deprecated in favor of a less stable API version.
-* Rule #4a: API lifetime is determined by the API stability level
-* Rule #4b: The "preferred" API version and the "storage version" for a given group may not advance until after a release has been made that supports both the new version and the previous version
+* Rule #4a: API lifetime is determined by the API stability level.
+* Rule #4b: The "preferred" API version and the "storage version" for a given group may not advance until after a release has been made that supports both the new version and the previous version.
 
 List API objects: `kubectl api-resources`
 

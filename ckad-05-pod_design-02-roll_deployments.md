@@ -19,9 +19,9 @@ List the revisions and history of a Deployment:
 - Rolling update (default): Delete and create Pods one by one to avoid loss of service.
   - Internally it scales the replicas of the new (+) and old (-) Deployment one by one.
 
-### **1.2. Actualizar Deployment**
+### **1.2. Update Deployment**
 
-Some Deployment parameter is modified, such as the version of a container, number of replicas, ... And the command is executed, creating a new rollout:
+If some Deployment parameter is modified, such as the version of a container, number of replicas, ... And the following command is executed, it creates a new rollout:
 
 `kubectl apply -f deployment-def.yaml`
 
@@ -51,16 +51,17 @@ Return to a specific version:
 
 `kubectl rollout undo deployment/nginx-deployment --to-revision=2`
 
-## **3. Resumen de comandos**
+## **3. Commands**
 
-- Create: `kubectl create -f deployment-def.yaml`
-- Get: `kubectl get deployments`
-- Update: `kubectl apply -f deployment-def.yaml` (Crea if not exists)
+Commands to work with deployments:
+- Create from file: `kubectl create -f deployment-def.yaml` or `kubectl apply -f deployment-def.yaml`
+- Get: `kubectl get deployments` or `kubectl get deploy`
+- Update: `kubectl apply -f deployment-def.yaml` (Create if not exists)
 - Status: `kubectl rollout status deployment/myapp-deployment`
 - History: `kubectl rollout history deployment/myapp-deployment`
-- Revision history: `kubectl rollout history deploy myapp-deployment --revision=2`
-- Rollback: `kubectl rollout undo deployment/myapp-deployment`
-- Rollback to previous version: `kubectl rollout undo deploy nginx-deployment --to-revision=2`
+- Show revision history: `kubectl rollout history deploy myapp-deployment --revision=2`
+- Rollback to previous version: `kubectl rollout undo deployment/myapp-deployment`
+- Rollback to older version: `kubectl rollout undo deploy nginx-deployment --to-revision=2`
 
 ## **4. Examples: Updating a Deployment**
 

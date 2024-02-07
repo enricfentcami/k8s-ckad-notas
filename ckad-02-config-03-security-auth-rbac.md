@@ -22,7 +22,7 @@ Authenticate the kube-apiserver, auth mechanisms:
   * Static Token File: `--token-auth-file=user-token-details.csv`
 * Use it in the API calls specifying the basic auth. In curl `-u "user:pass"`
 
-_Note: This not a recommended authentication mechanism_
+_Note: This is not a recommended authentication mechanism_
 
 ### KubeConfig
 
@@ -246,7 +246,7 @@ To develop our own Admission Controllers we will use the MutatingAdmissionWebhoo
 2. Webhook server response is another `AdmissionReview` object with the `allowed` flag to true or false
 3. Webhook server can have a `validate` and/or `mutate` POST endpoints
 
-To configure an admission webhook we need to define a YAML object
+To configure an admission webhook we need to define a YAML object:
 
 ```yaml
 apiVersion: admissionregistration.k8s.io/v1
@@ -269,5 +269,4 @@ webhooks:
         operations: ["CREATE"]
         resources: ["pods"]
         scope: "Namespaced"
-
 ```
