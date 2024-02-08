@@ -26,11 +26,11 @@ Ingress does not appear in the `kubectl get all` command:
 
 `kubectl get ingress -n app-space`
 
-Eliminar el ingress:
+Delete an ingress:
 
 `kubectl delete ingress ingress-wear`
 
-NOTE: There is no shortcut to generate an input by command, you have to create the yaml from 0
+NOTE: There is no shortcut to generate an ingress by command, you have to create the yaml from 0 (using the official documentation)
 
 ## **2. Ingress resources**
 
@@ -92,10 +92,12 @@ spec:
                   number: 80
 ```
 
-#### Ejemplo de Ingress en diferentes subdominios del dominio (by Host):
+#### Ingress example on different subdomains of the domain (by Host):
 
 * `http://wear.my-store.com`
 * `http://watch.my-store.com`
+
+We use the `host` attribute to specify the full domain.
 
 ```yaml
 apiVersion: networking.k8s.io/v1

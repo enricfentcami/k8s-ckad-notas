@@ -1,6 +1,6 @@
 # EXAMPLE NETWORK POLICY
 
-![Design Patterns](./resources/images/ckad-networkpolicy.png)
+![Network diagram](./resources/images/ckad-networkpolicy.png)
 
 ## **PODS**
 
@@ -22,11 +22,13 @@
 
 `kubectl expose pod nginx-4 --name=nginx-service-4 --port=80`
 
+_Pods are automatically assigned the label `run` with the pod name. We will use it in this example as pod selectors._
+
 ## **NETWORK POLICIES**
 
 Network policy of pod/service 1:
 * Access from outside the node allowed
-* You can only access to pod/service 2 via port 80
+* it can only access to pod/service 2 via port 80
 * 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -44,7 +46,7 @@ spec:
   - Egress
 
   # To allow all ingress traffic, if we set the policyType
-  # It is the same as not putting the policyType in this config
+  # It is the same as not setting the ingress policyType in this config
   ingress: 
   - {}
 
@@ -60,7 +62,7 @@ spec:
 
 Network policy of pod/service 2:
 * Access only from pod/service 1 on port 80
-* You can only access pod/service 3 via port 80
+* It can only access pod/service 3 via port 80
 
 ```yaml
 apiVersion: networking.k8s.io/v1

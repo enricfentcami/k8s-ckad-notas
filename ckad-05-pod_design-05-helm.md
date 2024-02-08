@@ -31,6 +31,15 @@ data:
   USER_NAME: {{ .Values.worpressUsername }}
 ```
 
+Install the chart using the custom values:
+
+`helm install -f values.yaml mywordpress wordpress`
+
+Or set values one by one (same attributes as values.yaml file):
+
+`helm install --set image=wordpress:5.0 --set worpressUsername=user mywordpress wordpress`
+
+
 Other useful commands:
 
 * List installed packages: `helm list`

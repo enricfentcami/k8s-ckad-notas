@@ -2,10 +2,12 @@
 
 https://kubernetes.io/docs/concepts/services-networking/network-policies/
 
+NetworkPolicies are an application-centric construct which allow you to specify how a pod is allowed to communicate with various network "entities" (we use the word "entity" here to avoid overloading the more common terms such as "endpoints" and "services", which have specific Kubernetes connotations) over the network. NetworkPolicies apply to a connection with a pod on one or both ends, and are not relevant to other connections.
+
 ## **1. Ingress & Egress rules**
 
-* Ingress: Entry traffic to a service
-* Egress: Exit traffic from the service to another service
+* Ingress: Incoming traffic to a service
+* Egress: Outcoming traffic from the service to another service
 
 The service response does not influence the concepts.
 
