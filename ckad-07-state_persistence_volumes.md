@@ -2,9 +2,11 @@
 
 Storage within a Pod is volatile or transient. Volumes are used to persist data outside of the Pod.
 
+On-disk files in a container are ephemeral, which presents some problems for non-trivial applications when running in containers. One problem occurs when a container crashes or is stopped. Container state is not saved so all of the files that were created or modified during the lifetime of the container are lost. During a crash, kubelet restarts the container with a clean state. Another problem occurs when multiple containers are running in a Pod and need to share files. It can be challenging to setup and access a shared filesystem across all of the containers. The Kubernetes volume abstraction solves both of these problems. Familiarity with Pods is suggested.
+
 ## **1. Volumes & mount**
 
-Mount a volume inside the Pod with storage on the host (only useful on single-node):
+Mount a volume inside the Pod with storage on the host (only useful on single-node, but not recommended):
 
 ```yaml
 apiVersion: v1
@@ -35,13 +37,14 @@ Kubernetes has many different types such as: NFS, ceph, AWS EBS, ...
 
 https://kubernetes.io/docs/concepts/storage
 
-AWS EBS example (Elastic Block Store):
+NFS example (Elastic Block Store), removed:
 ```yaml
 volumes:
 - name: data-volume
-  awsElasticBlockStore:
-    volumeID: <volume-id>
-    fsType: ext4
+  nfs:
+    server: my-nfs-server.example.com
+    path: /my-nfs-volume
+    readOnly: true
 ```
 
 ## **2. Persistent Volumes**
@@ -63,9 +66,9 @@ spec:
     storage: 1Gi
 #  hostPath:              # Path of the node. Not recommended in production
 #    path: /tmp/data
-  awsElasticBlockStore:   # It is better to use an external service
-    volumeID: <volume-id>
-    fsType: ext4
+  nfs:
+    server: my-nfs-server.example.com
+    path: /my-nfs-volume
 ```
 
 ### **2.1. Commands**
@@ -75,9 +78,10 @@ spec:
 `kubectl get persitentvolume`
 
 Access modes:
-* ReadOnlyMany
-* ReadWriteOnce
-* ReadWriteMany
+* ReadWriteOnce: the volume can be mounted as read-write by a single node. ReadWriteOnce access mode still can allow multiple pods to access the volume when the pods are running on the same node. For single pod access, please see ReadWriteOncePod.
+* ReadOnlyMany: the volume can be mounted as read-only by many nodes.
+* ReadWriteMany: the volume can be mounted as read-write by many nodes.
+* ReadWriteOncePod: the volume can be mounted as read-write by a single Pod. Use ReadWriteOncePod access mode if you want to ensure that only one pod across the whole cluster can read that PVC or write to it.
 
 ### **2.2. Reclaim Policy**
 
@@ -86,6 +90,8 @@ https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reclaim-policy
 By eliminating PVC the PV can become orphaned. By default PVs have the policy `persistentVolumeReclaimPolicy` to `Retain` which expects the PV to be manually reclaimed by another PVC.
 
 Other options are `Recycle` and `Delete`. They are described in the documentation.
+
+For Kubernetes 1.29, only nfs and hostPath volume types support recycling.
 
 ## **3. Persistent Volume Claims**
 
@@ -109,7 +115,7 @@ selector:
 NOTE:
 * If the PV has more capacity than the PVC, the remaining space cannot be used by another PVC.
 * If the PVC does not have a PV available, it will remain in the "Pending" state until there is a PV that fits it.
-* 
+
 Persitent Volume Claim example:
 ```yaml
 apiVersion: v1
@@ -136,7 +142,7 @@ When created, it will match the PV created in point 1 and will bind according to
 
 `kubectl delete persitentvolumeclaim myclaim`
 
-### **3.2. Utilización de PVCs en Pods**
+### **3.2. Using PVCs in Pods**
 
 Once you create a PVC use it in a POD definition file by specifying the PVC Claim name under `persistentVolumeClaim` section in the volumes section like this:
 
@@ -161,3 +167,68 @@ spec:
 The same is true for ReplicaSets or Deployments. Add this to the pod template section of a Deployment on ReplicaSet.
 
 Reference URL: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#claims-as-volumes
+
+### **3.3. Example of hostPath persistent volume in Pods**
+
+Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: task-pv-pod
+spec:
+  containers:
+    - name: task-pv-container
+      image: nginx
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: task-pv-storage
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+        claimName: task-pv-claim
+```
+
+## **4. Ephemeral volumes**
+
+Some application need additional storage but don't care whether that data is stored persistently across restarts. For example, caching services are often limited by memory size and can move infrequently used data into storage that is slower than memory with little impact on overall performance.
+
+Other applications expect some read-only input data to be present in files, like configuration data or secret keys.
+
+Ephemeral volumes are designed for these use cases. Because volumes follow the Pod's lifetime and get created and deleted along with the Pod, Pods can be stopped and restarted without being limited to where some persistent volume is available.
+
+Ephemeral volumes are specified inline in the Pod spec, which simplifies application deployment and management.
+
+Ref: https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/
+
