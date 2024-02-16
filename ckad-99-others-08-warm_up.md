@@ -59,10 +59,28 @@
 <details><summary>Show answer</summary>
 <p>
 
-`kubectl run nginx2 --image=nginx --port=80 --requests=cpu=1,memory=256Mi --limits=cpu=2,memory=512Mi`
+`kubectl run  nginx2 --image=nginx --port=80 --dry-run=client -o yaml > pod.yaml`
+
+Edit and add the resources `vi pod.yaml`:
+
+```yaml
+  containers:
+  - image: nginx
+    name: nginx2
+    ports:
+    - containerPort: 80
+    resources:
+      requests:
+        cpu: 1
+        memory: 256Mi
+      limits:
+        cpu: 2
+        memory: 512Mi
+```
 
 `kubectl get po nginx2 -o yaml`
 
+_Important: Add resourcer by argument in the run command is no longer available_
 </p>
 </details>
 
@@ -71,7 +89,7 @@
 <details><summary>Show answer</summary>
 <p>
 
-`kubectl delete pod nginx nginx2 --force --grace-period=0`
+`kubectl delete pod nginx nginx2 --force`
 
 </p>
 </details>
@@ -80,6 +98,12 @@
 
 <details><summary>Show answer</summary>
 <p>
+
+In one command:
+
+`kubectl create deploy nginx-deployment --image=nginx --replicas=3 --port=80`
+
+Command + yaml file:
 
 `kubectl create deployment nginx-deployment --image=nginx -o yaml --dry-run > dep.yaml`
 
@@ -138,6 +162,12 @@ spec:
 
 <details><summary>Show answer</summary>
 <p>
+
+Internal DNS:
+
+`kubectl run busybox --image=busybox --rm -it -- sh -c 'wget -O- http://nginx-deployment-service'`
+
+External DNS:
 
 `kubectl get svc` -> Get the port
 
