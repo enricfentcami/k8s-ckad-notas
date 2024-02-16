@@ -11,10 +11,11 @@ Understanding the API deprectation policy: https://kubernetes.io/docs/reference/
 * Rule #4b: The "preferred" API version and the "storage version" for a given group may not advance until after a release has been made that supports both the new version and the previous version.
 
 List API objects: `kubectl api-resources`
+> It shows name, short names, api version (preferred), namespaced and kind
 
 List only API versions: `kubectl api-versions`
 
-## Migrate from old version to latest version
+## **2. Migrate from old version to latest version**
 
 We need to install the convert plugin: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-convert-plugin
 
@@ -59,3 +60,10 @@ spec:
             port:
               number: 80
 ```
+
+## **3. Enable beta/alpha versions**
+
+Add the `--runtime-config=rbac.authorization.k8s.io/v1alpha1` option to the Pod command in `kube-apiserver.yaml` file (`/etc/kubernetes/manifests/kube-apiserver.yaml`).
+
+
+

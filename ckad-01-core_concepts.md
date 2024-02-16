@@ -318,7 +318,7 @@ Force pod deletion:
 
 ## **5. Kubectl config contexts and namespaces**
 
-See kubeConfig manifest:
+View KubeConfig manifest:
 
 `kubectl config view`
 
@@ -335,3 +335,17 @@ Set a new default namespace for the current context (cluster):
 `kubectl config set-context --current --namespace=ckad`
 
 IMPORTANT: Very useful in the exam because the questions have their own namespace, but keep in mind to change it if required
+
+### KubeConfig location
+
+KubeConfig is located in `$HOME/.kube/config`.
+
+View KubeConfig from external file: 
+
+`kubectl config view --kubeconfig my-kube-config `
+
+Update the KubeConfig file from command:
+
+`kubectl config use-context research --kubeconfig my-kube-config`
+
+To use a custom KubeConfig file you shold overwrite the exising one in the user home directory.
