@@ -57,7 +57,11 @@ Based on the approximate % of the exam:
 There are other files with various exercises and notes:
 - [Complete YAML manifests example](ckad-99-others-02-example_complete.md)
 - [Warm up exercises for the exam](ckad-99-others-08-warm_up.md)
-- Solutions to KodeKloud exercises
+- [CKAD exercises, very useful](https://github.com/dgkanatsios/CKAD-exercises)
+- [Exam exercise samples (6 questions)](ckad-99-others-20-exam-samples.md)
+- [Exam exercise samples (17 questions)](ckad-99-others-21-exam-samples.md)
+- [Killer Shell CKAD labs](https://killercoda.com/killer-shell-ckad)
+- Solutions to KodeKloud exercises:
   - [Lightning lab 1](ckad-99-others-04-lightning_lab_1.md)
   - [Lightning lab 2](ckad-99-others-05-lightning_lab_2.md)
   - [Mock exam 1](ckad-99-others-06-mock_exam_1.md)
