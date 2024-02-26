@@ -116,9 +116,13 @@ Login into Docker:
 
 `docker login -u <username>`
 
+Tag an existing image:
+
+`docker tag <repository_source>/<image_name_source> <repository_target>/<image_name_target>` -> `docker tag webapp-color:1.0.0 hub.docker.com/webapp-color:latest`
+
 Publish an image to Docker Hub:
 
-`docker push <repository>/<image_name>` -> ` docker push hub.docker.com/webapp-color:latest`
+`docker push <repository>/<image_name>` -> `docker push hub.docker.com/webapp-color:latest`
 
 Search Hub for an image:
 

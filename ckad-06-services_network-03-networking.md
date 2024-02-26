@@ -56,7 +56,10 @@ ingress:
 
 _IMPORTANT: If the port is not entered in the ingress or egress config, any port is accepted._
 
-Complete example of network policy for DB Pod, allow access from BACKEND(API):
+### Examples
+
+#### Complete example of network policy for DB Pod, allow access from BACKEND(API):
+
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -78,9 +81,11 @@ spec:
       port: 3306
 ```
 
-Full example of 'internal':
+#### Full example of 'internal'
+
 * Input connection from 'web' using port 8080 with 'ingress'
 * Output connection to 'payroll' by 8080 and 'mysql' by 3306 with 'egress'
+
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -119,6 +124,35 @@ spec:
     ports:
     - protocol: TCP
       port: 3306
+```
+
+#### Egress example by namespace and some port to everything
+
+Example that restricts all Pods in Namespace space1 to only have outgoing traffic to Pods in Namespace space2 on port 80. Incoming traffic not affected.
+And still allow outgoing DNS traffic on port 53 TCP and UDP, to everything.
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: np
+  namespace: space1
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    - ports:
+        - port: 53
+          protocol: TCP
+        - port: 53
+          protocol: UDP
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: space2
+      ports:
+        - port: 80
 ```
 
 ### **2.1. Comamnds**
