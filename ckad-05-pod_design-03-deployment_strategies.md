@@ -2,6 +2,8 @@
 
 These are not strategies implemented natively in Kubernetes, but you have to know how to carry them out with the available tools.
 
+Take a look into MaxSurge and MaxUnavaiable rolling update params: https://medium.com/@bubu.tripathy/understanding-maxsurge-and-maxunavailable-4966dfafc8ba
+
 ## **1. Bue/green**
 
 Blue/Green will maintain two Deployments with the current version of the application and the new version.
