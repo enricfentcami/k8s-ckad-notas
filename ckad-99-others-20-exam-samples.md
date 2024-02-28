@@ -21,7 +21,7 @@ $ kubectl create clusterrolebinding pvviewer-role-binding --clusterrole=pvviewer
 
 Verify
 
-$ kubectl auth can-i list PersistentVolumes –as system:serviceaccount:default:pvviewer
+$ kubectl auth can-i list PersistentVolumes --as system:serviceaccount:default:pvviewer
 
 </p>
 </details>
@@ -53,6 +53,7 @@ Volume Name: pv-analytics, Storage: 100Mi, Access modes: ReadWriteMany, Host Pat
 
 $ vim pv.yaml
 
+```yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -64,6 +65,7 @@ spec:
     - ReadWriteMany
   hostPath:
     path:  /pv/data-analytics
+```
 
 $ kubectl create -f pv.yaml
 $ kubectl get pv
@@ -86,6 +88,7 @@ $ kubectl describe nodes node01 | grep -i taint
 $ kubectl run dev-redis --image=redis:alpine --dyn-run=client -o yaml > pod-redis.yaml
 $ vi prod-redis.yaml
 
+```yaml
 apiVersion: v1 
 kind: Pod 
 metadata:
@@ -99,6 +102,7 @@ spec:
     key: env_type 
     operator: Equal 
     value: prodcution
+```
 
 $ kubectl create -f prod-redis.yaml
 
@@ -109,9 +113,8 @@ Read More: Scheduling in K8s
 
 ## 5. Create a Pod called non-root-pod , image: redis:alpine
 
-runAsUser: 1000
-
-fsGroup: 2000
+* runAsUser: 1000
+* fsGroup: 2000
 
 <details><summary>Show answer</summary>
 <p>
@@ -119,6 +122,7 @@ fsGroup: 2000
 $ vim non-root-pod.yaml
 $ kubectl create -f non-root-pod.yaml
 
+```yaml
 apiVersion: v1 
 kind: Pod 
 metadata:
@@ -128,7 +132,9 @@ spec:
     runAsUser:  1000
     fsGroup:  2000 
   containers:
-  -  name:  non-root-pod
+  - name:  non-root-pod
+    image: redis
+```
 
 Read More: K8s Pods For Beginners
 
@@ -142,6 +148,7 @@ Read More: K8s Pods For Beginners
 
 $ vim policy.yaml
 
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -150,6 +157,7 @@ spec:
   podSelector: {}
   policyTypes:
   - Ingress
+```
 
 $ kubectl create -f policy.yaml
 

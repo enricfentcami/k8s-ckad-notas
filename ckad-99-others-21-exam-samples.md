@@ -66,6 +66,7 @@ The mount path in the initContainer doesn’t matter, as long as the git command
 
 When we put all these changes together, we get a YAML manifest looking like the one below:
 
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -103,6 +104,7 @@ spec:
      volumes:
      - name: www-data
        emptyDir: {}
+```
 </p>
 </details>
 
@@ -205,12 +207,14 @@ k edit deploy nginx-readiness
 
 Add the following under the template.spec.containers level. So this should be in line with name, image, etc.
 
+```yaml
        readinessProbe:
          httpGet:
            path: /index.html
            port: 80
          initialDelaySeconds: 5
          periodSeconds: 5 # how long to wait after first try
+```
 
 Watch for the deployment to become ready:
 
@@ -264,12 +268,13 @@ k run kubectl --image=nixery.dev/shell/kubectl --overrides='{ "spec": { "service
 
 Unfortunately kubectl create role doesn’t let you have multiple API groups so either you need to create two separate ones and merge them manually e.g.
 
-k create role scaler --verb=get --resource=deployments --resource-name=purple -o yaml --dry-run=client > scaler-get.yaml
+`k create role scaler --verb=get --resource=deployments --resource-name=purple -o yaml --dry-run=client > scaler-get.yaml`
 
-k create role scaler --verb=patch --resource=deployments/scale --resource-name=purple -o yaml --dry-run=client > scaler-patch.yaml
+`k create role scaler --verb=patch --resource=deployments/scale --resource-name=purple -o yaml --dry-run=client > scaler-patch.yaml`
 
 Or just create a YAML file:
 
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -283,18 +288,19 @@ rules:
  resources: ["deployments/scale"]
  verbs: ["patch"]
  resourceNames: ["purple"]
+```
 
 Create the rolebinding
 
-k create rolebinding scaler --serviceaccount=ckad:scaler --role=scaler
+`k create rolebinding scaler --serviceaccount=ckad:scaler --role=scaler`
 
 Now let’s open an interactive shell:
 
-k exec -it kubectl -- sh
+`k exec -it kubectl -- sh`
 
 Let’s see what we have permissions to do:
 
-kubectl auth can-i --list
+`kubectl auth can-i --list`
 
 We should see the following two:
 
@@ -303,8 +309,9 @@ deployments.apps/scale                          []                              
 
 Now let’s scale up to 2 replicas:
 
-kubectl scale deploy purple --replicas=2
-kubectl get deploy purple
+`kubectl scale deploy purple --replicas=2`
+
+`kubectl get deploy purple`
 
 Run exit to exit the container.
 </p>
@@ -317,7 +324,7 @@ Run exit to exit the container.
 <details><summary>Show answer</summary>
 <p>
 
-k create deploy yellow --image=nginx:alpine
+`k create deploy yellow --image=nginx:alpine`
 
 </p>
 </details>
@@ -327,7 +334,7 @@ k create deploy yellow --image=nginx:alpine
 <details><summary>Show answer</summary>
 <p>
 
-k create deploy orange --image=nginx:alpine
+`k create deploy orange --image=nginx:alpine`
 
 </p>
 </details>
@@ -341,6 +348,7 @@ This is where we involve network policies. We can block all traffic into (ingres
 
 k apply -f the following as a file.
 
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -352,16 +360,17 @@ spec:
  policyTypes:
  - Ingress
  ingress: []
+```
 
 Now let’s test this.
 
 First, get our pods’ IP addresses.
 
-k get pods -l 'app in (yellow,orange)' -o wide
+`k get pods -l 'app in (yellow,orange)' -o wide`
 
 First let’s see that we can ping orange.
 
-kubectl run --rm -it ping --image=alpine --restart=Never -- ping <orange-ip>
+`kubectl run --rm -it ping --image=alpine --restart=Never -- ping <orange-ip>`
 
 You should see something like:
 
@@ -371,12 +380,13 @@ If you don't see a command prompt, try pressing enter.
 
 Now try with yellow. You shouldn’t see any traffic.
 
-kubectl run --rm -it ping --image=alpine --restart=Never -- ping <yellow-ip>
+`kubectl run --rm -it ping --image=alpine --restart=Never -- ping <yellow-ip>`
 
 Run ctrl-c to terminate it.
 
 Allow pods of “orange” to ping pods of “yellow” Now we need a new network policy that allows ingress traffic from orange to yellow. Create the following YAML and k apply -f <file>.
 
+```yaml
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
@@ -390,9 +400,11 @@ spec:
     - podSelector:
         matchLabels:
           app: orange
+```
 
 This time we need to enter the orange pod and to ping yellow. We will need to use yellow’s IP. And we should see traffic.
 
-k exec -it <orange-pod-name> -- ping <yellow-ip>
+`k exec -it <orange-pod-name> -- ping <yellow-ip>`
+
 </p>
 </details>
